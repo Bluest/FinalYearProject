@@ -1,5 +1,4 @@
 #include <SDL.h>
-#include <SDL_image.h>
 #include <iostream>
 #include <memory>
 #include <cmath>
@@ -12,23 +11,23 @@ struct vec2f
 
 struct Unit
 {
-	SDL_Texture* sprite;
-	SDL_Rect spriteRect;
+	float size;
 	float speed;
 
-	bool moving = false;
+	bool moving;
 	vec2f pos;
 	vec2f dest;
-	vec2f dir = { NULL, NULL };
+	vec2f dir;
 
-	Unit(SDL_Texture* _sprite, int _size, float _speed, float _posX, float _posY)
+	Unit(float _size, float _speed, float _posX, float _posY)
 	{
-		sprite = _sprite;
-		spriteRect.w = _size * 2;
-		spriteRect.h = _size * 2;
+		size = _size;
 		speed = _speed;
+
+		moving = false;
 		pos = { _posX, _posY };
 		dest = { _posX, _posY };
+		dir = { NULL, NULL };
 	}
 
 	void draw(SDL_Renderer* _renderer)
@@ -43,9 +42,11 @@ struct Unit
 				static_cast<int>(dest.y));
 		}
 
-		spriteRect.x = static_cast<int>(pos.x - spriteRect.w / 2);
-		spriteRect.y = static_cast<int>(pos.y - spriteRect.h / 2);
-		SDL_RenderCopy(_renderer, sprite, nullptr, &spriteRect);
+		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+		for (float t = 0; t < 2 * M_PI; t += 1.0f / size)
+		{
+			SDL_RenderDrawPointF(_renderer, pos.x + size * sin(t), pos.y + size * cos(t));
+		}
 	}
 
 	void update()
@@ -93,7 +94,6 @@ void init(SDL_Window** _window, SDL_Renderer** _renderer)
 	const int winH = 480;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	IMG_Init(IMG_INIT_PNG);
 
 	*_window = SDL_CreateWindow(nullptr, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, winW, winH, SDL_WINDOW_SHOWN);
 	*_renderer = SDL_CreateRenderer(*_window, -1, SDL_RENDERER_ACCELERATED);
@@ -106,8 +106,7 @@ int main(int argc, char* argv[])
 
 	init(&window, &renderer);
 
-	SDL_Texture* spriteUnit = IMG_LoadTexture(renderer, "../sprites/unit.png");
-	std::shared_ptr<Unit> unit = std::make_shared<Unit>(spriteUnit, 25, 5.0f, 320.0f, 240.0f);
+	std::shared_ptr<Unit> unit = std::make_shared<Unit>(25.0f, 5.0f, 320.0f, 240.0f);
 
 	SDL_Event event;
 	bool quit = false;
@@ -139,10 +138,8 @@ int main(int argc, char* argv[])
 		SDL_Delay(16);
 	}
 
-	SDL_DestroyTexture(spriteUnit);
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	IMG_Quit();
 	SDL_Quit();
 	return 0;
 }
