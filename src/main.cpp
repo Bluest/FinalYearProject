@@ -9,6 +9,26 @@ struct Node
 {
 	Node(const int& _x, const int& _y) : x(_x), y(_y) {}
 
+	void updateCosts(std::shared_ptr<Node> _parent, std::shared_ptr<Node> _target)
+	{
+		parent = _parent;
+
+		if (x == parent->x || y == parent->y)
+		{
+			gCost = parent->gCost + 10;
+		}
+		else
+		{
+			gCost = parent->gCost + 14;
+		} // ? :
+
+		int dx = _target->x - x;
+		int dy = _target->y - y;
+		hCost = 10 * sqrt(dx * dx + dy * dy);
+
+		fCost = gCost + hCost;
+	}
+
 	bool isTerrain = false;
 	int x;
 	int y;
@@ -88,25 +108,36 @@ int main(int argc, char* argv[])
 
 	std::shared_ptr<Node> start = map[4][2];
 	std::shared_ptr<Node> end = map[4][8];
-	open.push_back(start);
 
 	std::shared_ptr<Node> current = start;
 
-	bool go = false;
-	while (!go)
-	{
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				go = true;
-			}
-		}
-	}
-
+	int i = 0;
 	bool quit = false;
 	while (!quit)
 	{
+		for (auto it = current->neighbours.begin(); it != current->neighbours.end(); ++it)
+		{
+			// If neighbour is terrain or is in closed, continue
+			if ((*it)->isTerrain || std::find(closed.begin(), closed.end(), *it) != closed.end())
+			{
+				continue;
+			}
+
+			// If /**/0 or neighbour is not in open...
+			if (/*current->gCost + 10 < (*it)->gCost*/0 || std::find(open.begin(), open.end(), *it) == open.end())
+			{
+				++i;
+
+				(*it)->updateCosts(current, end);
+
+				// If neighbour is not in open, add it
+				if (std::find(open.begin(), open.end(), *it) == open.end())
+				{
+					open.push_back(*it);
+				}
+			}
+		}
+
 		if (!open.empty())
 		{
 			current = open.front();
@@ -122,33 +153,34 @@ int main(int argc, char* argv[])
 			if ((*it)->fCost < current->fCost)
 			{
 				current = *it;
-				std::cout << "current = " << current->x << ", " << current->y << std::endl;
 			}
 		}
+
 		open.remove(current);
 		closed.push_back(current);
 
 		if (current == end)
 		{
-			std::cout << "Path found!";
+			std::cout << "Path found! " << i << " checks" << std::endl;
 			break;
 		}
 
-		for (auto it = current->neighbours.begin(); it != current->neighbours.end(); ++it)
-		{
-			// If neighbour is terrain or is in closed, continue
-			if ((*it)->isTerrain || std::find(closed.begin(), closed.end(), *it) != closed.end())
-			{
-				continue;
-			}
+		/*
+		current = start
+		
+		loop
+			foreach current neighbour
+				if neighbour is terrain or is in closed
+					continue
+				
+				gCost = current.gCost +10 or +14
+				hCost = pythag or dx+dy or diagonal
+				fCost = gCost + hCost
 
-			// If neighbour is not in open, set its parent and add it
-			if (std::find(open.begin(), open.end(), *it) == open.end())
-			{
-				(*it)->parent = current;
-				open.push_back(*it);
-			}
-		}
+			set current
+			if current == end
+				break
+		*/
 
 		/*
 		foreach neighbour of the current node
