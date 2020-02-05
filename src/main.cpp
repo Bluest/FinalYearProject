@@ -13,18 +13,17 @@ struct Node
 	{
 		parent = _parent;
 
-		if (x == parent->x || y == parent->y)
+		/*if (x == parent->x || y == parent->y)
 		{
 			gCost = parent->gCost + 10;
 		}
 		else
 		{
 			gCost = parent->gCost + 14;
-		} // ? :
+		} // ? :*/
 
-		int dx = _target->x - x;
-		int dy = _target->y - y;
-		hCost = 10 * sqrt(dx * dx + dy * dy);
+		gCost = parent->gCost + (x == parent->x || y == parent->y ? 10 : 14);
+		hCost = 10 * abs(_target->x - x) + 10 * abs(_target->y - y);
 
 		fCost = gCost + hCost;
 	}
@@ -53,8 +52,8 @@ std::vector<std::vector<std::shared_ptr<Node>>> initMap(const int& _mapW, const 
 		}
 	}
 
-	const int neighbourX[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
-	const int neighbourY[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
+	const int neighbourX[4] = { 0, 1, 0, -1 };
+	const int neighbourY[4] = { -1, 0, 1, 0 };
 
 	// For each node...
 	for (int y = 0; y < _mapH; ++y)
@@ -62,7 +61,7 @@ std::vector<std::vector<std::shared_ptr<Node>>> initMap(const int& _mapW, const 
 		for (int x = 0; x < _mapW; ++x)
 		{
 			// For each neighbour...
-			for (int i = 0; i < 8; ++i)
+			for (int i = 0; i < 4; ++i)
 			{
 				// If this neighbour is not out of bounds...
 				if (x + neighbourX[i] >= 0 && x + neighbourX[i] < _mapW &&
@@ -91,7 +90,7 @@ int main(int argc, char* argv[])
 	const int mapW = 10;
 	const int mapH = 10;
 	const int nodeSize = 50;
-	SDL_Rect tilePos;
+	SDL_Rect nodePos;
 
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -110,6 +109,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Node> end = map[4][8];
 
 	std::shared_ptr<Node> current = start;
+	closed.push_back(start);
 
 	int i = 0;
 	bool quit = false;
@@ -117,14 +117,23 @@ int main(int argc, char* argv[])
 	{
 		for (auto it = current->neighbours.begin(); it != current->neighbours.end(); ++it)
 		{
-			// If neighbour is terrain or is in closed, continue
+			// If neighbour is terrain or is in closed, continue to next neighbour
 			if ((*it)->isTerrain || std::find(closed.begin(), closed.end(), *it) != closed.end())
 			{
 				continue;
 			}
 
-			// If /**/0 or neighbour is not in open...
-			if (/*current->gCost + 10 < (*it)->gCost*/0 || std::find(open.begin(), open.end(), *it) == open.end())
+			// d = distance from current node to neighbour (10 or 14)
+			int d = (current->x == (*it)->x || current->y == (*it)->y) ? 10 : 14;
+
+			if (current->gCost + d < (*it)->gCost)
+			{
+				std::cout << "Old path to [" << (*it)->x << ", " << (*it)->y << "]: " << (*it)->gCost << std::endl;
+				std::cout << "New path to [" << (*it)->x << ", " << (*it)->y << "]: " << current->gCost + d << std::endl;
+			}
+
+			// If this path is shorter or neighbour is not in open...
+			if (current->gCost + d < (*it)->gCost || std::find(open.begin(), open.end(), *it) == open.end())
 			{
 				++i;
 
@@ -134,6 +143,103 @@ int main(int argc, char* argv[])
 				if (std::find(open.begin(), open.end(), *it) == open.end())
 				{
 					open.push_back(*it);
+				}
+			}
+		}
+
+		{
+			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_RenderClear(renderer);
+
+			for (int y = 0; y < mapH; ++y)
+			{
+				for (int x = 0; x < mapW; ++x)
+				{
+					SDL_Rect nodePos = { nodeSize * x, nodeSize * y, nodeSize + 1, nodeSize + 1 };
+
+					if (map[y][x]->isTerrain)
+					{
+						SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+						SDL_RenderFillRect(renderer, &nodePos);
+					}
+					else
+					{
+						SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+						SDL_RenderDrawRect(renderer, &nodePos);
+					}
+				}
+			}
+
+			// Draw open nodes
+			for (auto it = open.begin(); it != open.end(); ++it)
+			{
+				nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
+				SDL_SetRenderDrawColor(renderer, 192, 192, 255, 255);
+				SDL_RenderFillRect(renderer, &nodePos);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+				SDL_RenderDrawRect(renderer, &nodePos);
+			}
+
+			// Draw closed nodes
+			for (auto it = closed.begin(); it != closed.end(); ++it)
+			{
+				nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
+				SDL_SetRenderDrawColor(renderer, 128, 128, 255, 255);
+				SDL_RenderFillRect(renderer, &nodePos);
+				SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+				SDL_RenderDrawRect(renderer, &nodePos);
+			}
+
+			// Draw start node
+			nodePos = { nodeSize * start->x, nodeSize * start->y, nodeSize + 1, nodeSize + 1 };
+			SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+			SDL_RenderFillRect(renderer, &nodePos);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderDrawRect(renderer, &nodePos);
+
+			// Draw end node
+			nodePos = { nodeSize * end->x, nodeSize * end->y, nodeSize + 1, nodeSize + 1 };
+			SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+			SDL_RenderFillRect(renderer, &nodePos);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderDrawRect(renderer, &nodePos);
+
+			// Draw parent links
+			for (int y = 0; y < mapH; ++y)
+			{
+				for (int x = 0; x < mapW; ++x)
+				{
+					if (map[y][x]->parent)
+					{
+						SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+						SDL_RenderDrawLine(renderer,
+							nodeSize * map[y][x]->x + nodeSize / 2,
+							nodeSize * map[y][x]->y + nodeSize / 2,
+							nodeSize * map[y][x]->parent->x + nodeSize / 2,
+							nodeSize * map[y][x]->parent->y + nodeSize / 2);
+					}
+				}
+			}
+
+			SDL_RenderPresent(renderer);
+
+			bool stop = true;
+			while (stop)
+			{
+				while (SDL_PollEvent(&event))
+				{
+					if (event.type == SDL_MOUSEBUTTONDOWN)
+					{
+						if (event.button.button == SDL_BUTTON_LEFT)
+						{
+							stop = false;
+						}
+					}
+
+					if (event.type == SDL_QUIT)
+					{
+						quit = true;
+					}
 				}
 			}
 		}
@@ -156,6 +262,8 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		std::cout << "Checking [" << current->x << ", " << current->y << "] (fCost = " << current->fCost << ": gCost = " << current->gCost << ", hCost = " << current->hCost << ")" << std::endl;
+
 		open.remove(current);
 		closed.push_back(current);
 
@@ -164,116 +272,23 @@ int main(int argc, char* argv[])
 			std::cout << "Path found! " << i << " checks" << std::endl;
 			break;
 		}
-
-		/*
-		current = start
-		
-		loop
-			foreach current neighbour
-				if neighbour is terrain or is in closed
-					continue
-				
-				gCost = current.gCost +10 or +14
-				hCost = pythag or dx+dy or diagonal
-				fCost = gCost + hCost
-
-			set current
-			if current == end
-				break
-		*/
-
-		/*
-		foreach neighbour of the current node
-			if neighbour is in closed
-				skip to next neighbour
-
-			if new path to neighbour is shorter OR neighbour is not in open
-				set fCost of neighbour
-				set parent of neighbour to current
-				if neighbour is not in open
-					add neighbour to open
-		*/
-
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-		}
-
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		SDL_RenderClear(renderer);
-
-		for (int y = 0; y < mapH; ++y)
-		{
-			for (int x = 0; x < mapW; ++x)
-			{
-				SDL_Rect tilePos = { nodeSize * x, nodeSize * y, nodeSize + 1, nodeSize + 1 };
-
-				if (map[y][x]->isTerrain)
-				{
-					SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-					SDL_RenderFillRect(renderer, &tilePos);
-				}
-				else
-				{
-					SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-					SDL_RenderDrawRect(renderer, &tilePos);
-				}
-			}
-		}
-
-		// Draw open nodes
-		for (auto it = open.begin(); it != open.end(); ++it)
-		{
-			tilePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
-			SDL_SetRenderDrawColor(renderer, 192, 192, 255, 255);
-			SDL_RenderFillRect(renderer, &tilePos);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderDrawRect(renderer, &tilePos);
-		}
-
-		// Draw closed nodes
-		for (auto it = closed.begin(); it != closed.end(); ++it)
-		{
-			tilePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
-			SDL_SetRenderDrawColor(renderer, 128, 128, 255, 255);
-			SDL_RenderFillRect(renderer, &tilePos);
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderDrawRect(renderer, &tilePos);
-		}
-
-		// Draw start node
-		tilePos = { nodeSize * start->x, nodeSize * start->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-		SDL_RenderFillRect(renderer, &tilePos);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(renderer, &tilePos);
-
-		// Draw end node
-		tilePos = { nodeSize * end->x, nodeSize * end->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-		SDL_RenderFillRect(renderer, &tilePos);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(renderer, &tilePos);
-
-		SDL_RenderPresent(renderer);
-		SDL_Delay(50);
 	}
 
-	current = current->parent;
-	while (current != start)
+	if (current == end)
 	{
-		tilePos = { nodeSize * current->x, nodeSize * current->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-		SDL_RenderFillRect(renderer, &tilePos);
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(renderer, &tilePos);
-
 		current = current->parent;
-		SDL_RenderPresent(renderer);
-		SDL_Delay(50);
+		while (current != start)
+		{
+			nodePos = { nodeSize * current->x, nodeSize * current->y, nodeSize + 1, nodeSize + 1 };
+			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+			SDL_RenderFillRect(renderer, &nodePos);
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			SDL_RenderDrawRect(renderer, &nodePos);
+
+			current = current->parent;
+			SDL_RenderPresent(renderer);
+			SDL_Delay(50);
+		}
 	}
 
 	while (!quit)
