@@ -1,13 +1,16 @@
 #include <memory>
 
 #include "Game.h"
+#include "Map.h"
 #include "Unit.h"
 
 Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_CreateWindowAndRenderer(winW, winH, 0, &window, &renderer);
-	event = { NULL };
+
+	event = { 0 };
+	map = std::make_shared<Map>();
 }
 
 Game::~Game()

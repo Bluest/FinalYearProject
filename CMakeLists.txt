@@ -13,6 +13,10 @@ link_directories(
 add_executable(FYP
 	src/Unit.h
 	src/Unit.cpp
+	src/Node.h
+	src/Node.cpp
+	src/Map.h
+	src/Map.cpp
 	src/Game.h
 	src/Game.cpp
 	src/main.cpp

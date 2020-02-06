@@ -1,4 +1,8 @@
+#include <memory>
+
 #include "SDL.h"
+
+class Map;
 
 class Game
 {
@@ -15,4 +19,6 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 	SDL_Event event;
+
+	std::shared_ptr<Map> map;
 };
