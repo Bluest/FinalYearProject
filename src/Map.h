@@ -9,10 +9,12 @@ class Map
 public:
 	Map();
 
+	bool findPath();
+	//std::list<std::shared_ptr<Node>> findPath(const std::shared_ptr<Node>& _start, const std::shared_ptr<Node>& _end);
+
 private:
-	const int mapW = 10;
-	const int mapH = 10;
-	const int nodeSize = 50;
+	const int width = 10;
+	const int height = 10;
 
 	std::vector<std::vector<std::shared_ptr<Node>>> nodes;
 

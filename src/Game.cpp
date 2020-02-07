@@ -7,9 +7,9 @@
 Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(winW, winH, 0, &window, &renderer);
+	SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
 
-	event = { 0 };
+	event = { 0U };
 	map = std::make_shared<Map>();
 }
 
@@ -36,7 +36,7 @@ void Game::run()
 				switch (event.button.button)
 				{
 				case SDL_BUTTON_LEFT: unit->stop(); break;
-				case SDL_BUTTON_RIGHT: unit->move(); break;
+				case SDL_BUTTON_RIGHT: unit->move(); map->findPath(); break;
 				}
 				break;
 			}
