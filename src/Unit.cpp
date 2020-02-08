@@ -16,11 +16,19 @@ void Unit::draw(SDL_Renderer* _renderer)
 	if (moving)
 	{
 		SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-		SDL_RenderDrawLine(_renderer,
-			static_cast<int>(pos.x),
-			static_cast<int>(pos.y),
-			static_cast<int>(dest.x),
-			static_cast<int>(dest.y));
+		SDL_RenderDrawLineF(_renderer, pos.x, pos.y, dest.x, dest.y);
+	}
+
+	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
+	for (float y = -size; y < size; ++y)
+	{
+		for (float x = -size; x < size; ++x)
+		{
+			if (hypotf(x, y) < size)
+			{
+				SDL_RenderDrawPointF(_renderer, pos.x + x, pos.y + y);
+			}
+		}
 	}
 
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
@@ -55,8 +63,8 @@ void Unit::move()
 {
 	int x, y;
 	SDL_GetMouseState(&x, &y);
-	dest.x = static_cast<float>(x);
-	dest.y = static_cast<float>(y);
+	dest.x = float(x);
+	dest.y = float(y);
 
 	vec2f delta = { dest.x - pos.x, dest.y - pos.y };
 	float distance = hypotf(delta.x, delta.y);
@@ -71,4 +79,9 @@ void Unit::move()
 void Unit::stop()
 {
 	moving = false;
+}
+
+vec2f Unit::getPos()
+{
+	return pos;
 }

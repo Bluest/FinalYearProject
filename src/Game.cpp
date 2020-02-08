@@ -7,7 +7,7 @@
 Game::Game()
 {
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer);
+	SDL_CreateWindowAndRenderer(500, 500, 0, &window, &renderer);
 
 	event = { 0U };
 	map = std::make_shared<Map>();
@@ -22,7 +22,7 @@ Game::~Game()
 
 void Game::run()
 {
-	std::shared_ptr<Unit> unit = std::make_shared<Unit>(25.0f, 5.0f, 320.0f, 240.0f);
+	std::shared_ptr<Unit> unit = std::make_shared<Unit>(20.0f, 5.0f, 125.0f, 225.0f);
 
 	bool quit = false;
 	while (!quit)
@@ -36,7 +36,15 @@ void Game::run()
 				switch (event.button.button)
 				{
 				case SDL_BUTTON_LEFT: unit->stop(); break;
-				case SDL_BUTTON_RIGHT: unit->move(); map->findPath(); break;
+				case SDL_BUTTON_RIGHT:
+				{
+					int targetX, targetY;
+					SDL_GetMouseState(&targetX, &targetY);
+					map->findPath(unit->getPos().x, unit->getPos().y, targetX, targetY);
+					unit->move();
+
+					break;
+				}
 				}
 				break;
 			}
@@ -48,6 +56,7 @@ void Game::run()
 
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
+		map->drawNodeGrid(renderer);
 		unit->draw(renderer);
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);

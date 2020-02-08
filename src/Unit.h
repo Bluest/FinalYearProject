@@ -16,6 +16,8 @@ public:
 	void move();
 	void stop();
 
+	vec2f getPos();
+
 private:
 	// Stats
 	float size;

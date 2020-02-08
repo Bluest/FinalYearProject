@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 
+#include "SDL.h"
+
 class Node;
 
 class Map
@@ -9,12 +11,14 @@ class Map
 public:
 	Map();
 
-	bool findPath();
-	//std::list<std::shared_ptr<Node>> findPath(const std::shared_ptr<Node>& _start, const std::shared_ptr<Node>& _end);
+	void drawNodeGrid(SDL_Renderer* _renderer);
+	bool findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY);
+	//std::list<std::shared_ptr<Node>> findPath(const vec2i& _start, const vec2i& _target);
 
 private:
 	const int width = 10;
 	const int height = 10;
+	const int nodeSize = 50;
 
 	std::vector<std::vector<std::shared_ptr<Node>>> nodes;
 
@@ -22,4 +26,5 @@ private:
 	// Compare speed and memory
 	std::list<std::shared_ptr<Node>> open;
 	std::list<std::shared_ptr<Node>> closed;
+	std::list<std::shared_ptr<Node>> path;
 };
