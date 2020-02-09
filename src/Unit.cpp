@@ -1,5 +1,5 @@
 #include "Unit.h"
-#include "Node.h"
+#include "Node.h" // Remove when path is replaced with a list of vec2
 
 Unit::Unit(float _size, float _speed, float _posX, float _posY)
 {
@@ -9,24 +9,17 @@ Unit::Unit(float _size, float _speed, float _posX, float _posY)
 	pos = { _posX, _posY };
 	dest = { _posX, _posY };
 	step = { 0.0f, 0.0f };
-	pathIt = path.begin();
+	pathIt = path.end();
 	updatePathIt = false;
 }
 
 void Unit::move(const std::list<std::shared_ptr<Node>>& _path)
 {
-	path = _path; // unless it's empty?
-	if (!path.empty())
+	if (!_path.empty())
 	{
+		path = _path;
 		pathIt = path.begin();
 		moveToPathIt();
-	}
-	else
-	{
-		pathIt = path.end();
-		// This way, if you click to move into terrain while moving, the unit will instantly stop their current path
-		// I don't like that, implement better functionality here
-		// The way that "pathIt == path.end()" signifies that the unit isn't moving might need changing
 	}
 }
 
@@ -76,11 +69,11 @@ void Unit::update()
 void Unit::draw(SDL_Renderer* _renderer)
 {
 	// Path
-	if (pathIt != path.end())
-	{
-		SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-		SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), (*pathIt)->x * 50 + 25, (*pathIt)->y * 50 + 25);
-	}
+	//if (pathIt != path.end())
+	//{
+	//	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
+	//	SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), (*pathIt)->x * 50 + 25, (*pathIt)->y * 50 + 25);
+	//}
 
 	// Fill
 	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
@@ -114,6 +107,17 @@ void Unit::moveToPathIt()
 
 	vec2f delta = { dest.x - pos.x, dest.y - pos.y };
 	float distance = hypotf(delta.x, delta.y);
-	step.x = speed * delta.x / distance;
-	step.y = speed * delta.y / distance;
+	if (distance > 0)
+	{
+		step.x = speed * delta.x / distance;
+		step.y = speed * delta.y / distance;
+	}
+	else
+	{
+		std::advance(pathIt, 1);
+		if (pathIt != path.end())
+		{
+			moveToPathIt();
+		}
+	}
 }

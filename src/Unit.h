@@ -34,7 +34,7 @@ private:
 	vec2f pos;
 	vec2f dest;
 	vec2f step;
-	std::list<std::shared_ptr<Node>> path; // list of positions instead of nodes?
+	std::list<std::shared_ptr<Node>> path; // TODO: list of vec2 instead of nodes
 	std::list<std::shared_ptr<Node>>::iterator pathIt;
 	bool updatePathIt;
 };

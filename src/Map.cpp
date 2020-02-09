@@ -126,7 +126,13 @@ std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _s
 	std::shared_ptr<Node> start = nodes[_startY / nodeSize][_startX / nodeSize];
 	std::shared_ptr<Node> target = nodes[_targetY / nodeSize][_targetX / nodeSize];
 
-	if (start == target || target->isTerrain)
+	if (start == target)
+	{
+		path.push_back(target);
+		return path;
+	}
+
+	if (target->isTerrain)
 	{
 		return path;
 	}
@@ -185,11 +191,14 @@ std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _s
 
 		if (current == target)
 		{
+			// TODO: Move to farthest visible node
+
 			while (current != start)
 			{
 				path.push_front(current);
 				current = current->parent;
 			}
+			path.push_front(start);
 
 			return path;
 		}
