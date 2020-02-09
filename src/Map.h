@@ -12,7 +12,7 @@ public:
 	Map();
 
 	void drawNodeGrid(SDL_Renderer* _renderer);
-	bool findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY);
+	std::list<std::shared_ptr<Node>> findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY);
 	//std::list<std::shared_ptr<Node>> findPath(const vec2i& _start, const vec2i& _target);
 
 private:
@@ -26,5 +26,5 @@ private:
 	// Compare speed and memory
 	std::list<std::shared_ptr<Node>> open;
 	std::list<std::shared_ptr<Node>> closed;
-	std::list<std::shared_ptr<Node>> path;
+	std::list<std::shared_ptr<Node>> path; // Currently only stored for drawing purposes
 };

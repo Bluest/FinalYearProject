@@ -9,7 +9,7 @@ Game::Game()
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_CreateWindowAndRenderer(500, 500, 0, &window, &renderer);
 
-	event = { 0U };
+	event = { 0u };
 	map = std::make_shared<Map>();
 }
 
@@ -27,6 +27,7 @@ void Game::run()
 	bool quit = false;
 	while (!quit)
 	{
+		// Input
 		while (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -40,9 +41,7 @@ void Game::run()
 				{
 					int targetX, targetY;
 					SDL_GetMouseState(&targetX, &targetY);
-					map->findPath(unit->getPos().x, unit->getPos().y, targetX, targetY);
-					unit->move();
-
+					unit->move(map->findPath(int(unit->getPos().x), int(unit->getPos().y), targetX, targetY));
 					break;
 				}
 				}
@@ -52,13 +51,17 @@ void Game::run()
 			}
 		}
 
+		// Update
 		unit->update();
 
+		// Draw
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		map->drawNodeGrid(renderer);
 		unit->draw(renderer);
 		SDL_RenderPresent(renderer);
+
+		// Time
 		SDL_Delay(16);
 	}
 }

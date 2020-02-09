@@ -90,6 +90,7 @@ void Map::drawNodeGrid(SDL_Renderer* _renderer)
 		SDL_RenderDrawRect(_renderer, &nodePos);
 	}
 
+	// Draw path
 	for (auto it = path.begin(); it != path.end(); ++it)
 	{
 		nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
@@ -98,26 +99,9 @@ void Map::drawNodeGrid(SDL_Renderer* _renderer)
 		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
 		SDL_RenderDrawRect(_renderer, &nodePos);
 	}
-
-	// Draw parent links
-	for (int y = 0; y < height; ++y)
-	{
-		for (int x = 0; x < width; ++x)
-		{
-			if (nodes[y][x]->parent)
-			{
-				SDL_SetRenderDrawColor(_renderer, 0, 255, 0, 255);
-				SDL_RenderDrawLine(_renderer,
-					nodeSize * nodes[y][x]->x + nodeSize / 2,
-					nodeSize * nodes[y][x]->y + nodeSize / 2,
-					nodeSize * nodes[y][x]->parent->x + nodeSize / 2,
-					nodeSize * nodes[y][x]->parent->y + nodeSize / 2);
-			}
-		}
-	}
 }
 
-bool Map::findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY)
+std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY)
 {
 	open.clear();
 	closed.clear();
@@ -126,14 +110,9 @@ bool Map::findPath(const int& _startX, const int& _startY, const int& _targetX, 
 	std::shared_ptr<Node> start = nodes[_startY / nodeSize][_startX / nodeSize];
 	std::shared_ptr<Node> target = nodes[_targetY / nodeSize][_targetX / nodeSize];
 
-	if (start == target)
+	if (start == target || target->isTerrain)
 	{
-		return true;
-	}
-
-	if (target->isTerrain)
-	{
-		return false;
+		return path;
 	}
 
 	std::shared_ptr<Node> current = start;
@@ -174,7 +153,7 @@ bool Map::findPath(const int& _startX, const int& _startY, const int& _targetX, 
 		else
 		{
 			std::cout << "No path!" << std::endl;
-			return false;
+			return path;
 		}
 
 		for (auto it = open.begin(); it != open.end(); ++it)
@@ -190,16 +169,14 @@ bool Map::findPath(const int& _startX, const int& _startY, const int& _targetX, 
 
 		if (current == target)
 		{
-			std::cout << "Path found!" << std::endl;
-
 			while (current != start)
 			{
 				path.push_front(current);
 				current = current->parent;
 			}
-			path.push_front(start);
+			//path.push_front(start); // Unnecessary?
 
-			return true;
+			return path;
 		}
 	}
 }

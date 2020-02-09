@@ -15,8 +15,9 @@ public:
 	}
 
 	bool isTerrain = false;
-	int x;
-	int y;
+	int x; // accessed by Unit (but eventually not by Map?)
+	int y; // accessed by Unit (but eventually not by Map?)
+	// static int nodeSize = 50; // accessed by Unit
 	int fCost = 0;
 	int gCost = 0;
 	int hCost = 0;

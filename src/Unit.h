@@ -1,4 +1,9 @@
+#include <list>
+#include <memory>
+
 #include "SDL.h"
+
+class Node;
 
 struct vec2f
 {
@@ -10,11 +15,11 @@ class Unit
 {
 public:
 	Unit(float _size, float _speed, float _posX, float _posY);
-
-	void draw(SDL_Renderer* _renderer);
-	void update();
-	void move();
+	
+	void move(const std::list<std::shared_ptr<Node>>& _path);
 	void stop();
+	void update();
+	void draw(SDL_Renderer* _renderer);
 
 	vec2f getPos();
 
@@ -24,8 +29,7 @@ private:
 	float speed;
 
 	// State
-	bool moving;
 	vec2f pos;
-	vec2f dest;
-	vec2f step;
+	std::list<std::shared_ptr<Node>> path; // list of positions instead of nodes?
+	std::list<std::shared_ptr<Node>>::iterator pathIt;
 };
