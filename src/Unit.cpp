@@ -7,17 +7,33 @@ Unit::Unit(float _size, float _speed, float _posX, float _posY)
 	speed = _speed;
 
 	pos = { _posX, _posY };
+	dest = { _posX, _posY };
+	step = { 0.0f, 0.0f };
 	pathIt = path.begin();
+	updatePathIt = false;
 }
 
 void Unit::move(const std::list<std::shared_ptr<Node>>& _path)
 {
-	path = _path;
-	pathIt = path.begin();
+	path = _path; // unless it's empty?
+	if (!path.empty())
+	{
+		pathIt = path.begin();
+		moveToPathIt();
+	}
+	else
+	{
+		pathIt = path.end();
+		// This way, if you click to move into terrain while moving, the unit will instantly stop their current path
+		// I don't like that, implement better functionality here
+		// The way that "pathIt == path.end()" signifies that the unit isn't moving might need changing
+	}
 }
 
 void Unit::stop()
 {
+	dest = { pos.x, pos.y };
+	step = { 0.0f, 0.0f };
 	path.clear();
 	pathIt = path.end();
 }
@@ -26,24 +42,34 @@ void Unit::update()
 {
 	if (pathIt != path.end())
 	{
-		pos.x = float((*pathIt)->x * 50 + 25);
-		pos.y = float((*pathIt)->y * 50 + 25);
-		std::advance(pathIt, 1);
-	
-		/*pos.x += step.x;
+		pos.x += step.x;
 		pos.y += step.y;
 	
-		if (step.x > 0.0f) { if (pos.x > dest.x) moving = false; }
-		else if (step.x < 0.0f) { if (pos.x < dest.x) moving = false; }
+		// Instead of these if elses below, perhaps track progress from node to node with a scalar?
+		// Also so that the remainder of the scalar can carry over to moving towards the next node this frame
+		// Currently if the step overshoots, the unit snaps back to that node, causing slight stuttering
+
+		// Moving right or left
+		if (step.x > 0.0f) { if (pos.x > dest.x) updatePathIt = true; }
+		else if (step.x < 0.0f) { if (pos.x < dest.x) updatePathIt = true; }
 	
-		if (step.y > 0.0f) { if (pos.y > dest.y) moving = false; }
-		else if (step.y < 0.0f) { if (pos.y < dest.y) moving = false; }
+		// Moving down or up
+		if (step.y > 0.0f) { if (pos.y > dest.y) updatePathIt = true; }
+		else if (step.y < 0.0f) { if (pos.y < dest.y) updatePathIt = true; }
 	
-		if (!moving)
+		if (updatePathIt)
 		{
 			pos.x = dest.x;
 			pos.y = dest.y;
-		}*/
+
+			std::advance(pathIt, 1);
+			if (pathIt != path.end())
+			{
+				moveToPathIt();
+			}
+
+			updatePathIt = false;
+		}
 	}
 }
 
@@ -80,4 +106,14 @@ void Unit::draw(SDL_Renderer* _renderer)
 vec2f Unit::getPos()
 {
 	return pos;
+}
+
+void Unit::moveToPathIt()
+{
+	dest = { float((*pathIt)->x * 50 + 25), float((*pathIt)->y * 50 + 25) };
+
+	vec2f delta = { dest.x - pos.x, dest.y - pos.y };
+	float distance = hypotf(delta.x, delta.y);
+	step.x = speed * delta.x / distance;
+	step.y = speed * delta.y / distance;
 }

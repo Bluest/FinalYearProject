@@ -24,12 +24,17 @@ public:
 	vec2f getPos();
 
 private:
+	void moveToPathIt();
+
 	// Stats
 	float size;
 	float speed;
 
-	// State
+	// State (Should pathfinding logic be a separate class?)
 	vec2f pos;
+	vec2f dest;
+	vec2f step;
 	std::list<std::shared_ptr<Node>> path; // list of positions instead of nodes?
 	std::list<std::shared_ptr<Node>>::iterator pathIt;
+	bool updatePathIt;
 };

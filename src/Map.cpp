@@ -17,6 +17,8 @@ Map::Map()
 
 	const int neighbourX[4] = { 0, 1, 0, -1 };
 	const int neighbourY[4] = { -1, 0, 1, 0 };
+	//const int neighbourX[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+	//const int neighbourY[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
 
 	// For each node...
 	for (int y = 0; y < height; ++y)
@@ -44,6 +46,20 @@ Map::Map()
 	for (int y = wallStartY; y < height - wallStartY; ++y)
 	{
 		nodes[y][wallX]->isTerrain = true;
+	}
+}
+
+void Map::refreshNodes()
+{
+	// Only refresh nodes in the open and closed lists?
+	// ie. The ones that were set to non-zero values
+
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			nodes[y][x]->gCost = 0;
+		}
 	}
 }
 
@@ -130,7 +146,7 @@ std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _s
 
 			if (current->gCost + 1 < (*it)->gCost)
 			{
-				std::cout << "Path updated at [" << (*it)->x << ", " << (*it)->y << "]: " << std::endl;
+				std::cout << "Path updated at [" << (*it)->x << ", " << (*it)->y << "]: " << (*it)->gCost << " -> " << current->gCost << std::endl;
 			}
 
 			// If this path is shorter or neighbour is not in open...
@@ -174,7 +190,6 @@ std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _s
 				path.push_front(current);
 				current = current->parent;
 			}
-			//path.push_front(start); // Unnecessary?
 
 			return path;
 		}

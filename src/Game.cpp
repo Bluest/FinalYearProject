@@ -52,6 +52,7 @@ void Game::run()
 		}
 
 		// Update
+		map->refreshNodes();
 		unit->update();
 
 		// Draw

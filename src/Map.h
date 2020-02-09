@@ -11,6 +11,7 @@ class Map
 public:
 	Map();
 
+	void refreshNodes();
 	void drawNodeGrid(SDL_Renderer* _renderer);
 	std::list<std::shared_ptr<Node>> findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY);
 	//std::list<std::shared_ptr<Node>> findPath(const vec2i& _start, const vec2i& _target);
