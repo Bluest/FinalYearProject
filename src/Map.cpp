@@ -1,4 +1,6 @@
+#include <fstream>
 #include <iostream>
+#include <string>
 
 #include "Map.h"
 #include "Node.h"
@@ -15,10 +17,9 @@ Map::Map()
 		}
 	}
 
+	// Set neighbours
 	const int neighbourX[4] = { 0, 1, 0, -1 };
 	const int neighbourY[4] = { -1, 0, 1, 0 };
-	//const int neighbourX[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
-	//const int neighbourY[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
 
 	// For each node...
 	for (int y = 0; y < height; ++y)
@@ -38,14 +39,23 @@ Map::Map()
 		}
 	}
 
-	// Terrain
-	// TODO: Replace with read from file
-	int wallX = width * 3 / 4;
-	int wallStartY = height / 5;
+	loadTerrain();
+}
 
-	for (int y = wallStartY; y < height - wallStartY; ++y)
+void Map::loadTerrain()
+{
+	std::ifstream file("map.txt");
+	std::string line;
+	char cell;
+
+	for (int y = 0; y < height; ++y)
 	{
-		nodes[y][wallX]->isTerrain = true;
+		std::getline(file, line);
+		for (size_t x = 0; x < line.size(); ++x)
+		{
+			cell = line[x];
+			nodes[y][x]->isTerrain = atoi(&cell);
+		}
 	}
 }
 
