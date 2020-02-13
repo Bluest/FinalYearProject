@@ -1,7 +1,7 @@
 #include "Unit.h"
 #include "Node.h" // Remove when path is replaced with a list of vec2
 
-Unit::Unit(float _size, float _speed, float _posX, float _posY)
+Unit::Unit(const float& _size, const float& _speed, const float& _posX, const float& _posY)
 {
 	size = _size;
 	speed = _speed;
@@ -11,6 +11,15 @@ Unit::Unit(float _size, float _speed, float _posX, float _posY)
 	step = { 0.0f, 0.0f };
 	pathIt = path.end();
 	updatePathIt = false;
+}
+
+bool Unit::isClicked(const int& _clickX, const int& _clickY)
+{
+	// AABB
+	return _clickX > pos.x - size &&
+		_clickX < pos.x + size &&
+		_clickY > pos.y - size &&
+		_clickY < pos.y + size;
 }
 
 void Unit::move(const std::list<std::shared_ptr<Node>>& _path)
@@ -69,11 +78,12 @@ void Unit::update()
 void Unit::draw(SDL_Renderer* _renderer)
 {
 	// Path
-	//if (pathIt != path.end())
-	//{
-	//	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-	//	SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), (*pathIt)->x * 50 + 25, (*pathIt)->y * 50 + 25);
-	//}
+	if (pathIt != path.end())
+	{
+		SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
+		SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), path.back()->x * 50 + 25, path.back()->y * 50 + 25);
+		//SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), (*pathIt)->x * 50 + 25, (*pathIt)->y * 50 + 25);
+	}
 
 	// Fill
 	SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);

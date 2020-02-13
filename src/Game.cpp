@@ -1,4 +1,4 @@
-#include <memory>
+#include <list>
 
 #include "Game.h"
 #include "Map.h"
@@ -22,7 +22,14 @@ Game::~Game()
 
 void Game::run()
 {
-	std::shared_ptr<Unit> unit = std::make_shared<Unit>(20.0f, 5.0f, 125.0f, 225.0f);
+	// TODO: Player Class
+	// units, resources, structures, etc.
+	std::list<std::shared_ptr<Unit>> units;
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 75.0f, 475.0f));
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 25.0f, 475.0f));
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 25.0f, 425.0f));
+
+	std::list<std::shared_ptr<Unit>> selection;
 
 	bool quit = false;
 	while (!quit)
@@ -36,12 +43,44 @@ void Game::run()
 			{
 				switch (event.button.button)
 				{
-				case SDL_BUTTON_LEFT: unit->stop(); break;
+				case SDL_BUTTON_LEFT:
+				{
+					int clickX, clickY;
+					SDL_GetMouseState(&clickX, &clickY);
+
+					selection.clear();
+					for (auto it = units.begin(); it != units.end(); ++it)
+					{
+						// If a unit is , select it and break
+						if ((*it)->isClicked(clickX, clickY))
+						{
+							selection.push_back(*it);
+							break;
+						}
+					}
+
+					if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
+					break;
+				}
 				case SDL_BUTTON_RIGHT:
 				{
+					// TODO: Input Class
 					int targetX, targetY;
 					SDL_GetMouseState(&targetX, &targetY);
-					unit->move(map->findPath(int(unit->getPos().x), int(unit->getPos().y), targetX, targetY));
+
+					for (auto it = selection.begin(); it != selection.end(); ++it)
+					{
+						// TODO?: (*it)->move(targetX, targetY)
+						(*it)->move(map->findPath(int((*it)->getPos().x), int((*it)->getPos().y), targetX, targetY));
+					}
+					break;
+				}
+				case SDL_BUTTON_MIDDLE:
+				{
+					for (auto it = units.begin(); it != units.end(); ++it)
+					{
+						(*it)->stop();
+					}
 					break;
 				}
 				}
@@ -53,16 +92,25 @@ void Game::run()
 
 		// Update
 		map->refreshNodes();
-		unit->update();
+
+		for (auto it = units.begin(); it != units.end(); ++it)
+		{
+			(*it)->update();
+		}
 
 		// Draw
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderClear(renderer);
 		map->drawNodeGrid(renderer);
-		unit->draw(renderer);
+
+		for (auto it = units.begin(); it != units.end(); ++it)
+		{
+			(*it)->draw(renderer);
+		}
+
 		SDL_RenderPresent(renderer);
 
-		// Time
+		// TODO: Time Class
 		SDL_Delay(16);
 	}
 }

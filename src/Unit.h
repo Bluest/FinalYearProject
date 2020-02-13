@@ -14,8 +14,9 @@ struct vec2f
 class Unit
 {
 public:
-	Unit(float _size, float _speed, float _posX, float _posY);
-	
+	Unit(const float& _size, const float& _speed, const float& _posX, const float& _posY);
+
+	bool isClicked(const int& _clickX, const int& _clickY);
 	void move(const std::list<std::shared_ptr<Node>>& _path);
 	void stop();
 	void update();
@@ -30,7 +31,8 @@ private:
 	float size;
 	float speed;
 
-	// State (Should pathfinding logic be a separate class?)
+	// State
+	// TODO: Navigation Class
 	vec2f pos;
 	vec2f dest;
 	vec2f step;
