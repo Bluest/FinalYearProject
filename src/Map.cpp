@@ -127,14 +127,14 @@ void Map::drawNodeGrid(SDL_Renderer* _renderer)
 	}
 }
 
-std::list<std::shared_ptr<Node>> Map::findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY)
+std::list<std::shared_ptr<Node>> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _target)
 {
 	open.clear();
 	closed.clear();
 	path.clear();
 
-	std::shared_ptr<Node> start = nodes[_startY / nodeSize][_startX / nodeSize];
-	std::shared_ptr<Node> target = nodes[_targetY / nodeSize][_targetX / nodeSize];
+	std::shared_ptr<Node> start = nodes[_start.y / nodeSize][_start.x / nodeSize];
+	std::shared_ptr<Node> target = nodes[_target.y / nodeSize][_target.x / nodeSize];
 
 	if (start == target)
 	{

@@ -1,25 +1,25 @@
 #include "Unit.h"
 #include "Node.h" // Remove when path is replaced with a list of vec2
 
-Unit::Unit(const float& _size, const float& _speed, const float& _posX, const float& _posY)
+Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _pos)
 {
 	size = _size;
 	speed = _speed;
 
-	pos = { _posX, _posY };
-	dest = { _posX, _posY };
-	step = { 0.0f, 0.0f };
+	pos = _pos;
+	dest = pos;
+	step = glm::vec2(0.0f, 0.0f);
 	pathIt = path.end();
 	updatePathIt = false;
 }
 
-bool Unit::isClicked(const int& _clickX, const int& _clickY)
+bool Unit::isClicked(const glm::ivec2& _click)
 {
 	// AABB
-	return _clickX > pos.x - size &&
-		_clickX < pos.x + size &&
-		_clickY > pos.y - size &&
-		_clickY < pos.y + size;
+	return _click.x > pos.x - size &&
+		_click.x < pos.x + size &&
+		_click.y > pos.y - size &&
+		_click.y < pos.y + size;
 }
 
 void Unit::move(const std::list<std::shared_ptr<Node>>& _path)
@@ -106,7 +106,7 @@ void Unit::draw(SDL_Renderer* _renderer)
 	}
 }
 
-vec2f Unit::getPos()
+glm::vec2 Unit::getPos()
 {
 	return pos;
 }
@@ -114,13 +114,13 @@ vec2f Unit::getPos()
 void Unit::moveToPathIt()
 {
 	dest = { float((*pathIt)->x * 50 + 25), float((*pathIt)->y * 50 + 25) };
-
-	vec2f delta = { dest.x - pos.x, dest.y - pos.y };
+	
+	glm::vec2 delta = dest - pos;
 	float distance = hypotf(delta.x, delta.y);
+	//float distance = glm::length(delta);
 	if (distance > 0)
 	{
-		step.x = speed * delta.x / distance;
-		step.y = speed * delta.y / distance;
+		step = speed * delta / distance;
 	}
 	else
 	{

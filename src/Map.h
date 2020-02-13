@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 
+#include "glm/vec2.hpp"
 #include "SDL2/SDL.h"
 
 class Node;
@@ -14,8 +15,7 @@ public:
 	void loadTerrain();
 	void refreshNodes();
 	void drawNodeGrid(SDL_Renderer* _renderer);
-	std::list<std::shared_ptr<Node>> findPath(const int& _startX, const int& _startY, const int& _targetX, const int& _targetY);
-	//std::list<std::shared_ptr<Node>> findPath(const vec2i& _start, const vec2i& _target);
+	std::list<std::shared_ptr<Node>> findPath(const glm::ivec2& _start, const glm::ivec2& _target);
 
 private:
 	const int width = 10;

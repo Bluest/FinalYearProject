@@ -1,28 +1,23 @@
 #include <list>
 #include <memory>
 
-#include "SDL2/SDL.h"
+#include "glm/vec2.hpp"
+#include "SDL2/SDL_render.h"
 
 class Node;
-
-struct vec2f
-{
-	float x;
-	float y;
-};
 
 class Unit
 {
 public:
-	Unit(const float& _size, const float& _speed, const float& _posX, const float& _posY);
+	Unit(const float& _size, const float& _speed, const glm::vec2& _pos);
 
-	bool isClicked(const int& _clickX, const int& _clickY);
+	bool isClicked(const glm::ivec2& _click);
 	void move(const std::list<std::shared_ptr<Node>>& _path);
 	void stop();
 	void update();
 	void draw(SDL_Renderer* _renderer);
 
-	vec2f getPos();
+	glm::vec2 getPos();
 
 private:
 	void moveToPathIt();
@@ -33,9 +28,9 @@ private:
 
 	// State
 	// TODO: Navigation Class
-	vec2f pos;
-	vec2f dest;
-	vec2f step;
+	glm::vec2 pos;
+	glm::vec2 dest;
+	glm::vec2 step;
 	std::list<std::shared_ptr<Node>> path; // TODO: list of vec2 instead of nodes
 	std::list<std::shared_ptr<Node>>::iterator pathIt;
 	bool updatePathIt;

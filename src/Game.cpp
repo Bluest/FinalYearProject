@@ -1,5 +1,7 @@
 #include <list>
 
+#include "glm/vec2.hpp"
+
 #include "Game.h"
 #include "Map.h"
 #include "Unit.h"
@@ -25,11 +27,18 @@ void Game::run()
 	// TODO: Player Class
 	// units, resources, structures, etc.
 	std::list<std::shared_ptr<Unit>> units;
-	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 75.0f, 475.0f));
-	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 25.0f, 475.0f));
-	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, 25.0f, 425.0f));
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(75.0f, 475.0f)));
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 475.0f)));
+	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 425.0f)));
+	// world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f } later
 
 	std::list<std::shared_ptr<Unit>> selection;
+
+	// Temporary: Start with everything selected
+	for (auto it = units.begin(); it != units.end(); ++it)
+	{
+		selection.push_back(*it);
+	}
 
 	bool quit = false;
 	while (!quit)
@@ -45,14 +54,14 @@ void Game::run()
 				{
 				case SDL_BUTTON_LEFT:
 				{
-					int clickX, clickY;
-					SDL_GetMouseState(&clickX, &clickY);
+					glm::ivec2 click;
+					SDL_GetMouseState(&click.x, &click.y);
 
 					selection.clear();
 					for (auto it = units.begin(); it != units.end(); ++it)
 					{
-						// If a unit is , select it and break
-						if ((*it)->isClicked(clickX, clickY))
+						// If a unit is clicked, select it and break
+						if ((*it)->isClicked(click))
 						{
 							selection.push_back(*it);
 							break;
@@ -65,13 +74,13 @@ void Game::run()
 				case SDL_BUTTON_RIGHT:
 				{
 					// TODO: Input Class
-					int targetX, targetY;
-					SDL_GetMouseState(&targetX, &targetY);
+					glm::ivec2 target;
+					SDL_GetMouseState(&target.x, &target.y);
 
 					for (auto it = selection.begin(); it != selection.end(); ++it)
 					{
-						// TODO?: (*it)->move(targetX, targetY)
-						(*it)->move(map->findPath(int((*it)->getPos().x), int((*it)->getPos().y), targetX, targetY));
+						// TODO?: (*it)->move(target)
+						(*it)->move(map->findPath((*it)->getPos(), target));
 					}
 					break;
 				}
