@@ -1,5 +1,4 @@
 #include "Unit.h"
-#include "Node.h" // Remove when path is replaced with a list of vec2
 
 Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _pos)
 {
@@ -22,7 +21,7 @@ bool Unit::isClicked(const glm::ivec2& _click)
 		_click.y < pos.y + size;
 }
 
-void Unit::move(const std::list<std::shared_ptr<Node>>& _path)
+void Unit::move(const std::list<glm::vec2>& _path)
 {
 	if (!_path.empty())
 	{
@@ -81,8 +80,8 @@ void Unit::draw(SDL_Renderer* _renderer)
 	if (pathIt != path.end())
 	{
 		SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-		SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), path.back()->x * 50 + 25, path.back()->y * 50 + 25);
-		//SDL_RenderDrawLine(_renderer, int(pos.x), int(pos.y), (*pathIt)->x * 50 + 25, (*pathIt)->y * 50 + 25);
+		SDL_RenderDrawLineF(_renderer, pos.x, pos.y, path.back().x * 50 + 25, path.back().y * 50 + 25);
+		//SDL_RenderDrawLineF(_renderer, pos.x, pos.y, pathIt->x * 50 + 25, pathIt->y * 50 + 25);
 	}
 
 	// Fill
@@ -113,7 +112,7 @@ glm::vec2 Unit::getPos()
 
 void Unit::moveToPathIt()
 {
-	dest = { float((*pathIt)->x * 50 + 25), float((*pathIt)->y * 50 + 25) };
+	dest = { float(pathIt->x * 50 + 25), float(pathIt->y * 50 + 25) };
 	
 	glm::vec2 delta = dest - pos;
 	float distance = hypotf(delta.x, delta.y);

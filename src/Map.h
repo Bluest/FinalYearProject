@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "glm/vec2.hpp"
-#include "SDL2/SDL.h"
+#include "SDL2/SDL_render.h"
 
 class Node;
 
@@ -15,7 +15,7 @@ public:
 	void loadTerrain();
 	void refreshNodes();
 	void drawNodeGrid(SDL_Renderer* _renderer);
-	std::list<std::shared_ptr<Node>> findPath(const glm::ivec2& _start, const glm::ivec2& _target);
+	std::list<glm::vec2> findPath(const glm::ivec2& _start, const glm::ivec2& _target);
 
 private:
 	const int width = 10;
@@ -23,10 +23,4 @@ private:
 	const int nodeSize = 50;
 
 	std::vector<std::vector<std::shared_ptr<Node>>> nodes;
-
-	// 2D vectors instead of lists?
-	// Compare speed and memory
-	std::list<std::shared_ptr<Node>> open;
-	std::list<std::shared_ptr<Node>> closed;
-	std::list<std::shared_ptr<Node>> path; // Currently only stored for drawing purposes
 };

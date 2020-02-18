@@ -63,6 +63,8 @@ void Map::refreshNodes()
 {
 	// Only refresh nodes in the open and closed lists?
 	// ie. The ones that were set to non-zero values
+	// Yeah, do this at the end of path calculation
+	// I mean, it's better than calling it every frame
 
 	for (int y = 0; y < height; ++y)
 	{
@@ -95,50 +97,22 @@ void Map::drawNodeGrid(SDL_Renderer* _renderer)
 			}
 		}
 	}
-
-	// Draw open nodes
-	for (auto it = open.begin(); it != open.end(); ++it)
-	{
-		nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(_renderer, 192, 192, 255, 255);
-		SDL_RenderFillRect(_renderer, &nodePos);
-		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(_renderer, &nodePos);
-	}
-
-	// Draw closed nodes
-	for (auto it = closed.begin(); it != closed.end(); ++it)
-	{
-		nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(_renderer, 128, 128, 255, 255);
-		SDL_RenderFillRect(_renderer, &nodePos);
-		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(_renderer, &nodePos);
-	}
-
-	// Draw path
-	for (auto it = path.begin(); it != path.end(); ++it)
-	{
-		nodePos = { nodeSize * (*it)->x, nodeSize * (*it)->y, nodeSize + 1, nodeSize + 1 };
-		SDL_SetRenderDrawColor(_renderer, 255, 255, 0, 255);
-		SDL_RenderFillRect(_renderer, &nodePos);
-		SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-		SDL_RenderDrawRect(_renderer, &nodePos);
-	}
 }
 
-std::list<std::shared_ptr<Node>> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _target)
+std::list<glm::vec2> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _target)
 {
-	open.clear();
-	closed.clear();
-	path.clear();
+	// 2D vectors instead of lists?
+	// Compare speed and memory
+	std::list<std::shared_ptr<Node>> open;
+	std::list<std::shared_ptr<Node>> closed;
+	std::list<glm::vec2> path;
 
 	std::shared_ptr<Node> start = nodes[_start.y / nodeSize][_start.x / nodeSize];
 	std::shared_ptr<Node> target = nodes[_target.y / nodeSize][_target.x / nodeSize];
 
 	if (start == target)
 	{
-		path.push_back(target);
+		path.push_back(target->pos);
 		return path;
 	}
 
@@ -162,7 +136,7 @@ std::list<std::shared_ptr<Node>> Map::findPath(const glm::ivec2& _start, const g
 
 			if (current->gCost + 1 < (*it)->gCost)
 			{
-				std::cout << "Path updated at [" << (*it)->x << ", " << (*it)->y << "]: " << (*it)->gCost << " -> " << current->gCost << std::endl;
+				std::cout << "Path updated at [" << (*it)->pos.x << ", " << (*it)->pos.y << "]: " << (*it)->gCost << " -> " << current->gCost << std::endl;
 			}
 
 			// If this path is shorter or neighbour is not in open...
@@ -201,14 +175,12 @@ std::list<std::shared_ptr<Node>> Map::findPath(const glm::ivec2& _start, const g
 
 		if (current == target)
 		{
-			// TODO: Move to farthest visible node
-
 			while (current != start)
 			{
-				path.push_front(current);
+				path.push_front(current->pos);
 				current = current->parent;
 			}
-			path.push_front(start);
+			path.push_front(start->pos);
 
 			return path;
 		}
