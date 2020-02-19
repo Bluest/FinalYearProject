@@ -2,6 +2,7 @@
 
 #include "glm/vec2.hpp"
 
+#include "Faction.h"
 #include "Game.h"
 #include "Map.h"
 #include "Unit.h"
@@ -24,6 +25,9 @@ Game::~Game()
 
 void Game::run()
 {
+	Faction player;
+	Faction enemy;
+
 	// TODO: Player Class
 	// units, resources, structures, etc.
 	std::list<std::shared_ptr<Unit>> units;

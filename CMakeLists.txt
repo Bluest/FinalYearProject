@@ -13,6 +13,8 @@ link_directories(
 add_executable(FYP
 	src/Unit.h
 	src/Unit.cpp
+	src/Faction.h
+	src/Faction.cpp
 	src/Node.h
 	src/Node.cpp
 	src/Map.h

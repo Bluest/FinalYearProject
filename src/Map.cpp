@@ -46,15 +46,16 @@ void Map::loadTerrain()
 {
 	std::ifstream file("map.txt");
 	std::string line;
-	char cell;
 
 	for (int y = 0; y < height; ++y)
 	{
 		std::getline(file, line);
 		for (size_t x = 0; x < line.size(); ++x)
 		{
-			cell = line[x];
-			nodes[y][x]->isTerrain = atoi(&cell);
+			if (line[x] == '#')
+			{
+				nodes[y][x]->isTerrain = true;
+			}
 		}
 	}
 }

@@ -45,7 +45,13 @@ void Unit::update()
 	{
 		pos.x += step.x;
 		pos.y += step.y;
-	
+
+		// Handle collisions here
+		// If this position overlaps with another unit, push both (or just self) back from the point of collision, but not into a terrain tile
+		// What if it's intersecting with multiple units?
+		// Its exact previous position will always be available at this point, so worst case, just don't move
+
+		// vvv Could probably use a lerp for this vvv
 		// Instead of these if elses below, perhaps track progress from node to node with a scalar?
 		// Also so that the remainder of the scalar can carry over to moving towards the next node this frame
 		// Currently if the step overshoots, the unit snaps back to that node, causing slight stuttering
@@ -53,11 +59,11 @@ void Unit::update()
 		// Moving right or left
 		if (step.x > 0.0f) { if (pos.x > dest.x) updatePathIt = true; }
 		else if (step.x < 0.0f) { if (pos.x < dest.x) updatePathIt = true; }
-	
+
 		// Moving down or up
 		if (step.y > 0.0f) { if (pos.y > dest.y) updatePathIt = true; }
 		else if (step.y < 0.0f) { if (pos.y < dest.y) updatePathIt = true; }
-	
+
 		if (updatePathIt)
 		{
 			pos.x = dest.x;
