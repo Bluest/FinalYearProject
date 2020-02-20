@@ -1,12 +1,12 @@
 #include "Unit.h"
 
-Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _pos)
+Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _position)
 {
 	size = _size;
 	speed = _speed;
 
-	pos = _pos;
-	dest = pos;
+	position = _position;
+	dest = position;
 	step = glm::vec2(0.0f, 0.0f);
 	pathIt = path.end();
 	updatePathIt = false;
@@ -15,10 +15,10 @@ Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _pos)
 bool Unit::isClicked(const glm::ivec2& _click)
 {
 	// AABB
-	return _click.x > pos.x - size &&
-		_click.x < pos.x + size &&
-		_click.y > pos.y - size &&
-		_click.y < pos.y + size;
+	return _click.x > position.x - size &&
+		_click.x < position.x + size &&
+		_click.y > position.y - size &&
+		_click.y < position.y + size;
 }
 
 void Unit::move(const std::list<glm::vec2>& _path)
@@ -33,7 +33,7 @@ void Unit::move(const std::list<glm::vec2>& _path)
 
 void Unit::stop()
 {
-	dest = { pos.x, pos.y };
+	dest = { position.x, position.y };
 	step = { 0.0f, 0.0f };
 	path.clear();
 	pathIt = path.end();
@@ -43,8 +43,8 @@ void Unit::update()
 {
 	if (pathIt != path.end())
 	{
-		pos.x += step.x;
-		pos.y += step.y;
+		position.x += step.x;
+		position.y += step.y;
 
 		// Handle collisions here
 		// If this position overlaps with another unit, push both (or just self) back from the point of collision, but not into a terrain tile
@@ -57,17 +57,17 @@ void Unit::update()
 		// Currently if the step overshoots, the unit snaps back to that node, causing slight stuttering
 
 		// Moving right or left
-		if (step.x > 0.0f) { if (pos.x > dest.x) updatePathIt = true; }
-		else if (step.x < 0.0f) { if (pos.x < dest.x) updatePathIt = true; }
+		if (step.x > 0.0f) { if (position.x > dest.x) updatePathIt = true; }
+		else if (step.x < 0.0f) { if (position.x < dest.x) updatePathIt = true; }
 
 		// Moving down or up
-		if (step.y > 0.0f) { if (pos.y > dest.y) updatePathIt = true; }
-		else if (step.y < 0.0f) { if (pos.y < dest.y) updatePathIt = true; }
+		if (step.y > 0.0f) { if (position.y > dest.y) updatePathIt = true; }
+		else if (step.y < 0.0f) { if (position.y < dest.y) updatePathIt = true; }
 
 		if (updatePathIt)
 		{
-			pos.x = dest.x;
-			pos.y = dest.y;
+			position.x = dest.x;
+			position.y = dest.y;
 
 			std::advance(pathIt, 1);
 			if (pathIt != path.end())
@@ -86,8 +86,8 @@ void Unit::draw(SDL_Renderer* _renderer)
 	if (pathIt != path.end())
 	{
 		SDL_SetRenderDrawColor(_renderer, 255, 0, 0, 255);
-		SDL_RenderDrawLineF(_renderer, pos.x, pos.y, path.back().x * 50 + 25, path.back().y * 50 + 25);
-		//SDL_RenderDrawLineF(_renderer, pos.x, pos.y, pathIt->x * 50 + 25, pathIt->y * 50 + 25);
+		SDL_RenderDrawLineF(_renderer, position.x, position.y, path.back().x * 50 + 25, path.back().y * 50 + 25);
+		//SDL_RenderDrawLineF(_renderer, position.x, position.y, pathIt->x * 50 + 25, pathIt->y * 50 + 25);
 	}
 
 	// Fill
@@ -98,7 +98,7 @@ void Unit::draw(SDL_Renderer* _renderer)
 		{
 			if (hypotf(x, y) < size)
 			{
-				SDL_RenderDrawPointF(_renderer, pos.x + x, pos.y + y);
+				SDL_RenderDrawPointF(_renderer, position.x + x, position.y + y);
 			}
 		}
 	}
@@ -107,20 +107,20 @@ void Unit::draw(SDL_Renderer* _renderer)
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
 	for (float t = 0; t < 2 * M_PI; t += 1.0f / size)
 	{
-		SDL_RenderDrawPointF(_renderer, pos.x + size * sinf(t), pos.y + size * cosf(t));
+		SDL_RenderDrawPointF(_renderer, position.x + size * sinf(t), position.y + size * cosf(t));
 	}
 }
 
-glm::vec2 Unit::getPos()
+glm::vec2 Unit::getPosition()
 {
-	return pos;
+	return position;
 }
 
 void Unit::moveToPathIt()
 {
 	dest = { float(pathIt->x * 50 + 25), float(pathIt->y * 50 + 25) };
 	
-	glm::vec2 delta = dest - pos;
+	glm::vec2 delta = dest - position;
 	float distance = hypotf(delta.x, delta.y);
 	//float distance = glm::length(delta);
 	if (distance > 0)

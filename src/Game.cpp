@@ -4,7 +4,9 @@
 
 #include "Faction.h"
 #include "Game.h"
+#include "Input.h"
 #include "Map.h"
+#include "Match.h"
 #include "Unit.h"
 
 Game::Game()
@@ -13,7 +15,9 @@ Game::Game()
 	SDL_CreateWindowAndRenderer(500, 500, 0, &window, &renderer);
 
 	event = { 0u };
+	input = std::make_shared<Input>();
 	map = std::make_shared<Map>();
+	match = std::make_shared<Match>(/*map*/);
 }
 
 Game::~Game()
@@ -27,6 +31,10 @@ void Game::run()
 {
 	Faction player;
 	Faction enemy;
+
+	player.createUnit(20.0f, 1.0f, glm::vec2(75.0f, 475.0f));
+	player.createUnit(20.0f, 1.0f, glm::vec2(25.0f, 475.0f));
+	player.createUnit(20.0f, 1.0f, glm::vec2(25.0f, 425.0f));
 
 	// TODO: Player Class
 	// units, resources, structures, etc.
@@ -84,7 +92,7 @@ void Game::run()
 					for (auto it = selection.begin(); it != selection.end(); ++it)
 					{
 						// TODO?: (*it)->move(target)
-						(*it)->move(map->findPath((*it)->getPos(), target));
+						(*it)->move(map->findPath((*it)->getPosition(), target));
 					}
 					break;
 				}

@@ -2,7 +2,9 @@
 
 #include "SDL2/SDL.h"
 
+class Input;
 class Map;
+class Match;
 
 class Game
 {
@@ -17,5 +19,7 @@ private:
 	SDL_Renderer* renderer;
 	SDL_Event event;
 
+	std::shared_ptr<Input> input;
 	std::shared_ptr<Map> map;
+	std::shared_ptr<Match> match;
 };

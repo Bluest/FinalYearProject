@@ -11,17 +11,25 @@ link_directories(
 )
 
 add_executable(FYP
-	src/Unit.h
-	src/Unit.cpp
-	src/Faction.h
+	src/Building.cpp
+	src/Building.h
 	src/Faction.cpp
-	src/Node.h
-	src/Node.cpp
-	src/Map.h
-	src/Map.cpp
-	src/Game.h
+	src/Faction.h
 	src/Game.cpp
+	src/Game.h
+	src/Input.cpp
+	src/Input.h
 	src/main.cpp
+	src/Map.cpp
+	src/Map.h
+	src/Match.cpp
+	src/Match.h
+	src/Node.cpp
+	src/Node.h
+	src/SelectableEntity.cpp
+	src/SelectableEntity.h
+	src/Unit.cpp
+	src/Unit.h
 )
 
 target_link_libraries(FYP SDL2 SDL2main)

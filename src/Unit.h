@@ -7,7 +7,7 @@
 class Unit
 {
 public:
-	Unit(const float& _size, const float& _speed, const glm::vec2& _pos);
+	Unit(const float& _size, const float& _speed, const glm::vec2& _position);
 
 	bool isClicked(const glm::ivec2& _click);
 	void move(const std::list<glm::vec2>& _path);
@@ -15,7 +15,7 @@ public:
 	void update();
 	void draw(SDL_Renderer* _renderer);
 
-	glm::vec2 getPos();
+	glm::vec2 getPosition();
 
 private:
 	void moveToPathIt();
@@ -26,7 +26,7 @@ private:
 
 	// State
 	// TODO: Navigation Class
-	glm::vec2 pos;
+	glm::vec2 position;
 	glm::vec2 dest;
 	glm::vec2 step;
 	std::list<glm::vec2> path;
