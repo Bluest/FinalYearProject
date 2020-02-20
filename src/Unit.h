@@ -4,7 +4,9 @@
 #include "glm/vec2.hpp"
 #include "SDL2/SDL_render.h"
 
-class Unit
+#include "Object.h"
+
+class Unit : public Object
 {
 public:
 	Unit(const float& _size, const float& _speed, const glm::vec2& _position);

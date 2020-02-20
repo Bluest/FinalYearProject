@@ -6,7 +6,6 @@
 #include "Game.h"
 #include "Input.h"
 #include "Map.h"
-#include "Match.h"
 #include "Unit.h"
 
 Game::Game()
@@ -17,7 +16,6 @@ Game::Game()
 	event = { 0u };
 	input = std::make_shared<Input>();
 	map = std::make_shared<Map>();
-	match = std::make_shared<Match>(/*map*/);
 }
 
 Game::~Game()
@@ -29,12 +27,13 @@ Game::~Game()
 
 void Game::run()
 {
-	Faction player;
-	Faction enemy;
+	Faction player(this);
+	Faction enemy(this);
 
 	player.createUnit(20.0f, 1.0f, glm::vec2(75.0f, 475.0f));
 	player.createUnit(20.0f, 1.0f, glm::vec2(25.0f, 475.0f));
 	player.createUnit(20.0f, 1.0f, glm::vec2(25.0f, 425.0f));
+	// world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f } later
 
 	// TODO: Player Class
 	// units, resources, structures, etc.
@@ -42,7 +41,6 @@ void Game::run()
 	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(75.0f, 475.0f)));
 	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 475.0f)));
 	units.emplace_back(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 425.0f)));
-	// world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f } later
 
 	std::list<std::shared_ptr<Unit>> selection;
 
@@ -134,4 +132,9 @@ void Game::run()
 		// TODO: Time Class
 		SDL_Delay(16);
 	}
+}
+
+void Game::addObject(std::shared_ptr<Object> _object)
+{
+	objects.push_back(_object);
 }

@@ -1,10 +1,11 @@
+#include <list>
 #include <memory>
 
 #include "SDL2/SDL.h"
 
 class Input;
 class Map;
-class Match;
+class Object;
 
 class Game
 {
@@ -13,6 +14,7 @@ public:
 	~Game();
 
 	void run();
+	void addObject(std::shared_ptr<Object> _object);
 
 private:
 	SDL_Window* window;
@@ -21,5 +23,5 @@ private:
 
 	std::shared_ptr<Input> input;
 	std::shared_ptr<Map> map;
-	std::shared_ptr<Match> match;
+	std::list<std::shared_ptr<Object>> objects;
 };

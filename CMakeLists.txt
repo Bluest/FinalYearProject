@@ -22,12 +22,9 @@ add_executable(FYP
 	src/main.cpp
 	src/Map.cpp
 	src/Map.h
-	src/Match.cpp
-	src/Match.h
 	src/Node.cpp
 	src/Node.h
-	src/SelectableEntity.cpp
-	src/SelectableEntity.h
+	src/Object.h
 	src/Unit.cpp
 	src/Unit.h
 )
