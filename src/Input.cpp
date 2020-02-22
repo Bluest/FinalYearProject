@@ -1,6 +1,6 @@
 #include "Input.h"
 
-bool Input::isKeyHeld(const SDL_Keycode& _key)
+bool Input::keyHold(const SDL_Keycode& _key)
 {
 	for (auto it = keysHeld.begin(); it != keysHeld.end(); it++)
 	{
@@ -13,7 +13,7 @@ bool Input::isKeyHeld(const SDL_Keycode& _key)
 	return false;
 }
 
-bool Input::isKeyPressed(const SDL_Keycode& _key)
+bool Input::keyPress(const SDL_Keycode& _key)
 {
 	for (auto it = keysPressed.begin(); it != keysPressed.end(); it++)
 	{
@@ -26,7 +26,7 @@ bool Input::isKeyPressed(const SDL_Keycode& _key)
 	return false;
 }
 
-bool Input::isKeyReleased(const SDL_Keycode& _key)
+bool Input::keyRelease(const SDL_Keycode& _key)
 {
 	for (auto it = keysReleased.begin(); it != keysReleased.end(); it++)
 	{
@@ -39,7 +39,7 @@ bool Input::isKeyReleased(const SDL_Keycode& _key)
 	return false;
 }
 
-bool Input::isMouseHeld(const int& _button)
+bool Input::mouseHold(const int& _button)
 {
 	for (auto it = mouseHeld.begin(); it != mouseHeld.end(); it++)
 	{
@@ -52,7 +52,7 @@ bool Input::isMouseHeld(const int& _button)
 	return false;
 }
 
-bool Input::isMousePressed(const int& _button)
+bool Input::mousePress(const int& _button)
 {
 	for (auto it = mousePressed.begin(); it != mousePressed.end(); it++)
 	{
@@ -65,7 +65,7 @@ bool Input::isMousePressed(const int& _button)
 	return false;
 }
 
-bool Input::isMouseReleased(const int& _button)
+bool Input::mouseRelease(const int& _button)
 {
 	for (auto it = mouseReleased.begin(); it != mouseReleased.end(); it++)
 	{
@@ -78,20 +78,12 @@ bool Input::isMouseReleased(const int& _button)
 	return false;
 }
 
-int Input::getMouseX()
+glm::ivec2 Input::mousePosition()
 {
-	int x = NULL;
-	SDL_GetMouseState(&x, nullptr);
+	glm::ivec2 mousePosition;
+	SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
 
-	return x;
-}
-
-int Input::getMouseY()
-{
-	int y = NULL;
-	SDL_GetMouseState(nullptr, &y);
-
-	return y;
+	return mousePosition;
 }
 
 bool Input::processInput(SDL_Event* _event)

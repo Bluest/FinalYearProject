@@ -50,62 +50,45 @@ void Game::run()
 		selection.push_back(*it);
 	}
 
-	bool quit = false;
-	while (!quit)
+	while (input->processInput(&event))
 	{
-		// Input
-		while (SDL_PollEvent(&event))
+		if (input->mousePress(SDL_BUTTON_LEFT))
 		{
-			switch (event.type)
+			glm::ivec2 click;
+			SDL_GetMouseState(&click.x, &click.y);
+
+			selection.clear();
+			for (auto it = units.begin(); it != units.end(); ++it)
 			{
-			case SDL_MOUSEBUTTONDOWN:
-			{
-				switch (event.button.button)
+				// If a unit is clicked, select it and break
+				if ((*it)->isClicked(click))
 				{
-				case SDL_BUTTON_LEFT:
-				{
-					glm::ivec2 click;
-					SDL_GetMouseState(&click.x, &click.y);
-
-					selection.clear();
-					for (auto it = units.begin(); it != units.end(); ++it)
-					{
-						// If a unit is clicked, select it and break
-						if ((*it)->isClicked(click))
-						{
-							selection.push_back(*it);
-							break;
-						}
-					}
-
-					if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
+					selection.push_back(*it);
 					break;
 				}
-				case SDL_BUTTON_RIGHT:
-				{
-					// TODO: Input Class
-					glm::ivec2 target;
-					SDL_GetMouseState(&target.x, &target.y);
-
-					for (auto it = selection.begin(); it != selection.end(); ++it)
-					{
-						// TODO?: (*it)->move(target)
-						(*it)->move(map->findPath((*it)->getPosition(), target));
-					}
-					break;
-				}
-				case SDL_BUTTON_MIDDLE:
-				{
-					for (auto it = units.begin(); it != units.end(); ++it)
-					{
-						(*it)->stop();
-					}
-					break;
-				}
-				}
-				break;
 			}
-			case SDL_QUIT: { quit = true; break; }
+
+			if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
+		}
+
+		if (input->mousePress(SDL_BUTTON_RIGHT))
+		{
+			// TODO: Input Class
+			glm::ivec2 target;
+			SDL_GetMouseState(&target.x, &target.y);
+
+			for (auto it = selection.begin(); it != selection.end(); ++it)
+			{
+				// TODO?: (*it)->move(target)
+				(*it)->move(map->findPath((*it)->getPosition(), target));
+			}
+		}
+
+		if (input->mousePress(SDL_BUTTON_MIDDLE))
+		{
+			for (auto it = units.begin(); it != units.end(); ++it)
+			{
+				(*it)->stop();
 			}
 		}
 

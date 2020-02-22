@@ -1,21 +1,21 @@
 #include <list>
 
 #include "SDL2/SDL_events.h"
+#include "glm/vec2.hpp"
 
 class Input
 {
 public:
 	// Keyboard
-	bool isKeyHeld(const SDL_Keycode& _key);
-	bool isKeyPressed(const SDL_Keycode& _key);
-	bool isKeyReleased(const SDL_Keycode& _key);
+	bool keyHold(const SDL_Keycode& _key);
+	bool keyPress(const SDL_Keycode& _key);
+	bool keyRelease(const SDL_Keycode& _key);
 
 	// Mouse
-	bool isMouseHeld(const int& _button);
-	bool isMousePressed(const int& _button);
-	bool isMouseReleased(const int& _button);
-	int getMouseX();
-	int getMouseY();
+	bool mouseHold(const int& _button);
+	bool mousePress(const int& _button);
+	bool mouseRelease(const int& _button);
+	glm::ivec2 mousePosition();
 
 	bool processInput(SDL_Event* _event);
 
@@ -34,6 +34,4 @@ private:
 	std::list<int> mouseHeld;
 	std::list<int> mousePressed;
 	std::list<int> mouseReleased;
-	int mouseX;
-	int mouseY;
 };
