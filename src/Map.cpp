@@ -42,30 +42,13 @@ Map::Map()
 	loadTerrain();
 }
 
-void Map::loadTerrain()
-{
-	std::ifstream file("map.txt");
-	std::string line;
-
-	for (int y = 0; y < height; ++y)
-	{
-		std::getline(file, line);
-		for (size_t x = 0; x < line.size(); ++x)
-		{
-			if (line[x] == '#')
-			{
-				nodes[y][x]->isTerrain = true;
-			}
-		}
-	}
-}
-
 void Map::refreshNodes()
 {
 	// Only refresh nodes in the open and closed lists?
 	// ie. The ones that were set to non-zero values
 	// Yeah, do this at the end of path calculation
 	// I mean, it's better than calling it every frame
+	// This would then be a private function
 
 	for (int y = 0; y < height; ++y)
 	{
@@ -184,6 +167,24 @@ std::list<glm::vec2> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _
 			path.push_front(start->pos);
 
 			return path;
+		}
+	}
+}
+
+void Map::loadTerrain()
+{
+	std::ifstream file("map.txt");
+	std::string line;
+
+	for (int y = 0; y < height; ++y)
+	{
+		std::getline(file, line);
+		for (size_t x = 0; x < line.size(); ++x)
+		{
+			if (line[x] == '#')
+			{
+				nodes[y][x]->isTerrain = true;
+			}
 		}
 	}
 }

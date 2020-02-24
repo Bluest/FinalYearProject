@@ -1,6 +1,6 @@
 #include "Unit.h"
 
-Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _position)
+Unit::Unit(/*Type*/const float& _size, const float& _speed, const glm::vec2& _position)
 {
 	size = _size;
 	speed = _speed;
@@ -10,15 +10,6 @@ Unit::Unit(const float& _size, const float& _speed, const glm::vec2& _position)
 	step = glm::vec2(0.0f, 0.0f);
 	pathIt = path.end();
 	updatePathIt = false;
-}
-
-bool Unit::isClicked(const glm::ivec2& _click)
-{
-	// AABB
-	return _click.x > position.x - size &&
-		_click.x < position.x + size &&
-		_click.y > position.y - size &&
-		_click.y < position.y + size;
 }
 
 void Unit::move(const std::list<glm::vec2>& _path)
@@ -109,11 +100,6 @@ void Unit::draw(SDL_Renderer* _renderer)
 	{
 		SDL_RenderDrawPointF(_renderer, position.x + size * sinf(t), position.y + size * cosf(t));
 	}
-}
-
-glm::vec2 Unit::getPosition()
-{
-	return position;
 }
 
 void Unit::moveToPathIt()

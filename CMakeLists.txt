@@ -17,6 +17,8 @@ add_executable(FYP
 	src/Faction.h
 	src/Game.cpp
 	src/Game.h
+	src/GameState.cpp
+	src/GameState.h
 	src/Input.cpp
 	src/Input.h
 	src/main.cpp
@@ -25,6 +27,10 @@ add_executable(FYP
 	src/Node.cpp
 	src/Node.h
 	src/Object.h
+	src/Player.h
+	src/Player.cpp
+	src/SelectableObject.cpp
+	src/SelectableObject.h
 	src/Unit.cpp
 	src/Unit.h
 )

@@ -80,10 +80,10 @@ bool Input::mouseRelease(const int& _button)
 
 glm::ivec2 Input::mousePosition()
 {
-	glm::ivec2 mousePosition;
-	SDL_GetMouseState(&mousePosition.x, &mousePosition.y);
+	glm::ivec2 position;
+	SDL_GetMouseState(&position.x, &position.y);
 
-	return mousePosition;
+	return position;
 }
 
 bool Input::processInput(SDL_Event* _event)

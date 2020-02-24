@@ -12,12 +12,13 @@ class Map
 public:
 	Map();
 
-	void loadTerrain();
 	void refreshNodes();
 	void drawNodeGrid(SDL_Renderer* _renderer);
 	std::list<glm::vec2> findPath(const glm::ivec2& _start, const glm::ivec2& _target);
 
 private:
+	void loadTerrain();
+
 	const int width = 10;
 	const int height = 10;
 	const int nodeSize = 50;

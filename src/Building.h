@@ -1,8 +1,8 @@
-#include "glm/glm.hpp"
+#include "glm/vec2.hpp"
 
-#include "Object.h"
+#include "SelectableObject.h"
 
-class Building : public Object
+class Building : public SelectableObject
 {
 public:
 	Building(/*Type*/const glm::ivec2& _size, const glm::ivec2& _position);
