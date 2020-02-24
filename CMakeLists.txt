@@ -29,6 +29,8 @@ add_executable(FYP
 	src/Object.h
 	src/Player.h
 	src/Player.cpp
+	src/ProtoFactory.cpp
+	src/ProtoFactory.h
 	src/SelectableObject.cpp
 	src/SelectableObject.h
 	src/Unit.cpp

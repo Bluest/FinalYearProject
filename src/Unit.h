@@ -16,7 +16,7 @@ public:
 	void update();
 	void draw(SDL_Renderer* _renderer);
 
-private:
+protected:
 	void moveToPathIt();
 
 	// Stats

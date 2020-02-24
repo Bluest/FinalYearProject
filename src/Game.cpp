@@ -4,7 +4,9 @@
 #include "GameState.h"
 #include "Map.h"
 #include "Player.h"
+
 #include "Unit.h"
+#include "ProtoFactory.h"
 
 Game::Game()
 {
@@ -28,7 +30,8 @@ void Game::run()
 	gameState->addSO(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(75.0f, 475.0f)));
 	gameState->addSO(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 475.0f)));
 	gameState->addSO(std::make_shared<Unit>(20.0f, 5.0f, glm::vec2(25.0f, 425.0f)));
-	// world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f } later
+	// world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f }
+	// as soon as OpenGL rendering is integrated
 
 	while (player->handleInput())
 	{
