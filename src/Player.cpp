@@ -25,7 +25,11 @@ bool Player::handleInput()
 		// Single click, single unit
 		selection.clear();
 		auto blah = gameState->selectObjectAt(input->mousePosition());
-		if (blah != nullptr) selection.push_back(blah);
+		if (blah != nullptr)
+		{
+			selection.push_back(blah);
+			blah->onLeftClick();
+		}
 
 		if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
 	}

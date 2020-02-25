@@ -1,4 +1,5 @@
-// This file and Unit.h may need include guards
+#ifndef BUILDING_H
+#define BUILDING_H
 
 #include "glm/vec2.hpp"
 
@@ -7,9 +8,7 @@
 class Building : public SelectableObject
 {
 public:
-	Building(/*Type*/const glm::ivec2& _size, const glm::ivec2& _position);
-
-protected:
-	glm::ivec2 position;
-	glm::ivec2 size;
+	Building(/*Type*/const float& _size, const glm::vec2& _position);
 };
+
+#endif // BUILDING_H
