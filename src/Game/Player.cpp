@@ -16,7 +16,7 @@ Player::Player(const std::shared_ptr<GameState>& _gameState)
 bool Player::handleInput()
 {
 	// play will equal false if input receives SDL_QUIT
-	play = input->processInput(&event);
+	play = input->processInput();
 
 	if (input->mousePress(SDL_BUTTON_LEFT))
 	{

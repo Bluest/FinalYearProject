@@ -86,7 +86,7 @@ glm::ivec2 Input::mousePosition()
 	return position;
 }
 
-bool Input::processInput(SDL_Event* _event)
+bool Input::processInput()
 {
 	// Clear the frame-specific lists at the start of the input frame
 	keysPressed.clear();
@@ -94,14 +94,14 @@ bool Input::processInput(SDL_Event* _event)
 	mousePressed.clear();
 	mouseReleased.clear();
 
-	while (SDL_PollEvent(_event))
+	while (SDL_PollEvent(&event))
 	{
-		switch (_event->type)
+		switch (event.type)
 		{
-		case SDL_KEYDOWN: { processKeyDown(_event->key.keysym.sym); break; }
-		case SDL_KEYUP: { processKeyUp(_event->key.keysym.sym); break; }
-		case SDL_MOUSEBUTTONDOWN: { processMouseDown(_event->button.button); break; }
-		case SDL_MOUSEBUTTONUP: { processMouseUp(_event->button.button); break; }
+		case SDL_KEYDOWN: { processKeyDown(event.key.keysym.sym); break; }
+		case SDL_KEYUP: { processKeyUp(event.key.keysym.sym); break; }
+		case SDL_MOUSEBUTTONDOWN: { processMouseDown(event.button.button); break; }
+		case SDL_MOUSEBUTTONUP: { processMouseUp(event.button.button); break; }
 		case SDL_QUIT: { return false; }
 		}
 	}

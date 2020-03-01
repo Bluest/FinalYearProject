@@ -17,13 +17,15 @@ public:
 	bool mouseRelease(const int& _button);
 	glm::ivec2 mousePosition();
 
-	bool processInput(SDL_Event* _event);
+	bool processInput();
 
 private:
 	void processKeyDown(const SDL_Keycode& _key);
 	void processKeyUp(const SDL_Keycode& _key);
 	void processMouseDown(const int& _button);
 	void processMouseUp(const int& _button);
+
+	SDL_Event event;
 
 	// Keyboard
 	std::list<SDL_Keycode> keysHeld;
