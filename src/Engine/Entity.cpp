@@ -14,10 +14,10 @@ void Entity::update()
 	}
 }
 
-void Entity::draw()
+void Entity::draw(SDL_Renderer* _renderer)
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
 	{
-		(*it)->onDraw();
+		(*it)->onDraw(_renderer);
 	}
 }

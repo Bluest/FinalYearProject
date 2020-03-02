@@ -5,6 +5,7 @@
 
 class Core;
 class Entity;
+struct SDL_Renderer;
 
 class Component
 {
@@ -16,7 +17,7 @@ protected:
 
 private:
 	virtual void onUpdate() {}
-	virtual void onDraw() {}
+	virtual void onDraw(SDL_Renderer* _renderer) {}
 
 	std::weak_ptr<Entity> entity;
 };

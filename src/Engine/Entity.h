@@ -5,6 +5,7 @@
 
 class Component;
 class Core;
+struct SDL_Renderer;
 
 struct Transform
 {
@@ -43,13 +44,15 @@ public:
 				return component;
 			}
 		}
+
+		return nullptr;
 	}
 
 	std::shared_ptr<Core> getCore();
 
 private:
 	void update();
-	void draw();
+	void draw(SDL_Renderer* _renderer);
 
 	std::weak_ptr<Entity> self;
 	std::weak_ptr<Core> core;

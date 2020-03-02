@@ -1,21 +1,30 @@
+#include "CircleRenderer.h"
 #include "Game.h"
-#include "GameState.h"
-#include "Map.h"
-#include "Player.h"
+#include "Navigation.h"
+#include "SelectionManager.h"
 
 Game::Game()
 {
 	core = Core::init(500, 500);
-
-	map = std::make_shared<Map>();
-	gameState = std::make_shared<GameState>(map);
-	player = std::make_shared<Player>(gameState);
 }
 
 void Game::start()
 {
-	std::shared_ptr<Entity> test = core->addEntity();
-	std::shared_ptr<Component> comp = test->addComponent<Component>();
+	std::shared_ptr<Entity> player = core->addEntity();
+	std::shared_ptr<SelectionManager> selectionManager =
+		player->addComponent<SelectionManager>();
+
+	std::shared_ptr<Entity> unit = core->addEntity();
+	selectionManager->addSelectableEntity(unit);
+	unit->transform.position = glm::vec3(3.0f, 0.0f, 2.0f);
+
+	std::shared_ptr<CircleRenderer> circle =
+		unit->addComponent<CircleRenderer>();
+
+	std::shared_ptr<Navigation> navigation =
+		unit->addComponent<Navigation>();
+
+	selectionManager->select(unit);
 
 	core->run();
 }

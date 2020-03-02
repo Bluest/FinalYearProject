@@ -27,6 +27,8 @@ target_link_libraries(Engine SDL2 SDL2main)
 add_executable(Game
 	src/Game/Building.cpp
 	src/Game/Building.h
+	src/Game/CircleRenderer.cpp
+	src/Game/CircleRenderer.h
 	src/Game/Faction.cpp
 	src/Game/Faction.h
 	src/Game/Game.cpp
@@ -36,15 +38,17 @@ add_executable(Game
 	src/Game/main.cpp
 	src/Game/Map.cpp
 	src/Game/Map.h
+	src/Game/Navigation.cpp
+	src/Game/Navigation.h
 	src/Game/Node.cpp
 	src/Game/Node.h
 	src/Game/Object.h
-	src/Game/Player.h
-	src/Game/Player.cpp
 	src/Game/ProtoFactory.cpp
 	src/Game/ProtoFactory.h
 	src/Game/SelectableObject.cpp
 	src/Game/SelectableObject.h
+	src/Game/SelectionManager.cpp
+	src/Game/SelectionManager.h
 	src/Game/Unit.cpp
 	src/Game/Unit.h
 )
