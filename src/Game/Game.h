@@ -1,6 +1,4 @@
-#include <memory>
-
-#include "SDL2/SDL.h"
+#include "Engine.h"
 
 class GameState;
 class Map;
@@ -10,13 +8,11 @@ class Game
 {
 public:
 	Game();
-	~Game();
 
-	void run();
+	void start();
 
 private:
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	std::shared_ptr<Core> core;
 
 	std::shared_ptr<Map> map;
 	std::shared_ptr<GameState> gameState;

@@ -18,6 +18,8 @@ public:
 	void run();
 
 private:
+	void draw();
+
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 

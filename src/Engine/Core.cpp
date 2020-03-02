@@ -45,14 +45,21 @@ void Core::run()
 			(*it)->update();
 		}
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
+		draw();
 
-		for (auto it = entities.begin(); it != entities.end(); ++it)
-		{
-			(*it)->draw();
-		}
-
-		SDL_RenderPresent(renderer);
+		//time->tick();
 	}
+}
+
+void Core::draw()
+{
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	for (auto it = entities.begin(); it != entities.end(); ++it)
+	{
+		(*it)->draw();
+	}
+
+	SDL_RenderPresent(renderer);
 }

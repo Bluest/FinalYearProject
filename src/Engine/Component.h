@@ -8,15 +8,16 @@ class Entity;
 
 class Component
 {
-public:
-	virtual void onUpdate() {}
-	virtual void onDraw() {}
+	friend class Entity;
 
 protected:
 	std::shared_ptr<Entity> getEntity();
 	std::shared_ptr<Core> getCore();
 
 private:
+	virtual void onUpdate() {}
+	virtual void onDraw() {}
+
 	std::weak_ptr<Entity> entity;
 };
 

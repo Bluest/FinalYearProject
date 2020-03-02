@@ -1,9 +1,9 @@
-#include "Engine.h"
+#include "Game.h"
 
 int main(int argc, char* argv[])
 {
-	std::shared_ptr<Core> core = Core::init(500, 500);
-	core->run();
+	Game game;
+	game.start();
 
 	return 0;
 }
