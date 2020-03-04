@@ -7,7 +7,7 @@
 
 class Node;
 
-class Map
+class Map //: public Component
 {
 public:
 	Map();

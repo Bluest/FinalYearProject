@@ -7,11 +7,13 @@ void SelectionManager::addSelectableEntity(const std::shared_ptr<Entity>& _entit
 	selectableEntities.push_back(_entity);
 }
 
+void SelectionManager::onStart()
+{
+	input = getCore()->getInput();
+}
+
 void SelectionManager::onUpdate()
 {
-	// onStart()?
-	std::shared_ptr<Input> input = getCore()->getInput();
-
 	if (input->mousePress(SDL_BUTTON_LEFT))
 	{
 		// What did I click?
@@ -20,24 +22,16 @@ void SelectionManager::onUpdate()
 		selection.clear();
 		for (auto it = selectableEntities.begin(); it != selectableEntities.end(); ++it)
 		{
+			// If an object is clicked, select it
 			if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
 			{
 				selection.push_back(*it);
+				//(*it)->onLeftClick();
 				break;
 			}
 		}
 
 		if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
-
-		//selection.clear();
-		//auto blah = gameState->selectObjectAt(input->mousePosition());
-		//if (blah != nullptr)
-		//{
-		//	selection.push_back(blah);
-		//	blah->onLeftClick();
-		//}
-		//
-		//if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
 	}
 
 	if (input->mousePress(SDL_BUTTON_RIGHT))
@@ -45,18 +39,15 @@ void SelectionManager::onUpdate()
 		// What did I click?
 		// What do I have selected?
 
-		// Below assumes selection of a unit, clicking the ground
-
 		std::list<glm::vec2> path;
-		path.push_back(glm::vec2(getCore()->getInput()->mousePosition()) / nodeSize);
+		path.push_back(glm::vec2(input->mousePosition()) / nodeSize);
 		
+		// if mousePosition isn't over an ally or enemy unit (so it's over the ground)
 		for (auto it = selection.begin(); it != selection.end(); ++it)
 		{
 			(*it)->getComponent<Navigation>()->setPath(path);
-
-			// TODO: Clean up this line lmao
-			// ie. (*it)->move(input->mousePosition()) if Unit has a pointer to Map or something
-			//(*it)->move(gameState->getMap()->findPath((*it)->getPosition(), input->mousePosition()));
+			//(*it)->getComponent<Navigation>()->move(input->mousePosition());
+			// Navigation::move gets a path from Map::findPath and passes it to setPath privately
 		}
 	}
 

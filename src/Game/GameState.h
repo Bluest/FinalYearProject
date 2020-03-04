@@ -17,7 +17,6 @@ public:
 	void draw(SDL_Renderer* _renderer);
 
 	void addSO(const std::shared_ptr<SelectableObject>& _so);
-	std::shared_ptr<SelectableObject> selectObjectAt(const glm::ivec2& _position);
 
 	std::shared_ptr<Map> getMap();
 

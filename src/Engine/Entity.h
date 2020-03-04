@@ -51,6 +51,7 @@ public:
 	std::shared_ptr<Core> getCore();
 
 private:
+	void start();
 	void update();
 	void draw(SDL_Renderer* _renderer);
 

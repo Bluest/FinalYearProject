@@ -40,20 +40,6 @@ void GameState::addSO(const std::shared_ptr<SelectableObject>& _so)
 	// It might be cleaner to have it there
 }
 
-std::shared_ptr<SelectableObject> GameState::selectObjectAt(const glm::ivec2& _position)
-{
-	for (auto it = selectableObjects.begin(); it != selectableObjects.end(); ++it)
-	{
-		// If an object is clicked, select it
-		if ((*it)->isClicked(_position))
-		{
-			return *it;
-		}
-	}
-
-	return nullptr;
-}
-
 std::shared_ptr<Map> GameState::getMap()
 {
 	return map;

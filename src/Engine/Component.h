@@ -16,6 +16,7 @@ protected:
 	std::shared_ptr<Core> getCore();
 
 private:
+	virtual void onStart() {}
 	virtual void onUpdate() {}
 	virtual void onDraw(SDL_Renderer* _renderer) {}
 

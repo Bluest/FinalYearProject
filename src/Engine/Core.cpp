@@ -38,6 +38,11 @@ std::shared_ptr<Input> Core::getInput()
 
 void Core::run()
 {
+	for (auto it = entities.begin(); it != entities.end(); ++it)
+	{
+		(*it)->start();
+	}
+
 	while (input->processInput())
 	{
 		for (auto it = entities.begin(); it != entities.end(); ++it)
