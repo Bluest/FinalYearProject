@@ -1,11 +1,10 @@
 #include <fstream>
-#include <iostream>
 #include <string>
 
 #include "Map.h"
 #include "Node.h"
 
-Map::Map()
+void Map::onStart()
 {
 	nodes.resize(width);
 
@@ -42,24 +41,7 @@ Map::Map()
 	loadTerrain();
 }
 
-void Map::refreshNodes()
-{
-	// Only refresh nodes in the open and closed lists?
-	// ie. The ones that were set to non-zero values
-	// Yeah, do this at the end of path calculation
-	// I mean, it's better than calling it every frame
-	// This would then be a private function
-
-	for (int y = 0; y < height; ++y)
-	{
-		for (int x = 0; x < width; ++x)
-		{
-			nodes[y][x]->gCost = 0;
-		}
-	}
-}
-
-void Map::drawNodeGrid(SDL_Renderer* _renderer)
+void Map::onDraw(SDL_Renderer* _renderer)
 {
 	SDL_Rect nodePos;
 
@@ -83,16 +65,19 @@ void Map::drawNodeGrid(SDL_Renderer* _renderer)
 	}
 }
 
-std::list<glm::vec2> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _target)
+std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _target)
 {
+	refreshNodes();
+
 	// 2D vectors instead of lists?
 	// Compare speed and memory
 	std::list<std::shared_ptr<Node>> open;
 	std::list<std::shared_ptr<Node>> closed;
 	std::list<glm::vec2> path;
 
-	std::shared_ptr<Node> start = nodes[_start.y / nodeSize][_start.x / nodeSize];
-	std::shared_ptr<Node> target = nodes[_target.y / nodeSize][_target.x / nodeSize];
+	// Round positions to nearest int
+	std::shared_ptr<Node> start = nodes[int(_start.y + 0.5f)][int(_start.x + 0.5f)];
+	std::shared_ptr<Node> target = nodes[int(_target.y + 0.5f)][int(_target.x + 0.5f)];
 
 	if (start == target)
 	{
@@ -118,11 +103,6 @@ std::list<glm::vec2> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _
 				continue;
 			}
 
-			if (current->gCost + 1 < (*it)->gCost)
-			{
-				std::cout << "Path updated at [" << (*it)->pos.x << ", " << (*it)->pos.y << "]: " << (*it)->gCost << " -> " << current->gCost << std::endl;
-			}
-
 			// If this path is shorter or neighbour is not in open...
 			if (current->gCost + 1 < (*it)->gCost || std::find(open.begin(), open.end(), *it) == open.end())
 			{
@@ -142,7 +122,6 @@ std::list<glm::vec2> Map::findPath(const glm::ivec2& _start, const glm::ivec2& _
 		}
 		else
 		{
-			std::cout << "No path!" << std::endl;
 			return path;
 		}
 
@@ -185,6 +164,20 @@ void Map::loadTerrain()
 			{
 				nodes[y][x]->isTerrain = true;
 			}
+		}
+	}
+}
+
+void Map::refreshNodes()
+{
+	// Only refresh nodes in the open and closed lists?
+	// ie. The ones that were set to non-zero values
+
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			nodes[y][x]->gCost = 0;
 		}
 	}
 }

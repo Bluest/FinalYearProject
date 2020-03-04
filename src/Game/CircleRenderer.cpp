@@ -3,8 +3,8 @@
 void CircleRenderer::onDraw(SDL_Renderer* _renderer)
 {
 	glm::vec2 position = glm::vec2(
-		getEntity()->transform.position.x * nodeSize,
-		getEntity()->transform.position.z * nodeSize);
+		getEntity()->transform.position.x * nodeSize + nodeSize / 2,
+		getEntity()->transform.position.z * nodeSize + nodeSize / 2);
 
 	float size = getEntity()->transform.scale.x * nodeSize / 2;
 

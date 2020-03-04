@@ -9,7 +9,7 @@ GameState::GameState(const std::shared_ptr<Map>& _map)
 
 void GameState::update()
 {
-	map->refreshNodes();
+	//map->refreshNodes();
 
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
@@ -22,7 +22,7 @@ void GameState::draw(SDL_Renderer* _renderer)
 	// Draw
 	SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 	SDL_RenderClear(_renderer);
-	map->drawNodeGrid(_renderer);
+	//map->drawNodeGrid(_renderer);
 
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{

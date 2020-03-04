@@ -5,9 +5,12 @@
 
 class Node
 {
+	friend class Map;
+
 public:
 	Node(const int& _x, const int& _y);
 
+private:
 	void updateCosts(std::shared_ptr<Node> _parent, std::shared_ptr<Node> _target);
 
 	bool isTerrain;

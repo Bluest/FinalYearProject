@@ -1,23 +1,20 @@
-#include <list>
-#include <memory>
 #include <vector>
 
-#include "glm/vec2.hpp"
-#include "SDL2/SDL_render.h"
+#include "Engine.h"
 
 class Node;
 
-class Map //: public Component
+class Map : public Component
 {
 public:
-	Map();
-
-	void refreshNodes();
-	void drawNodeGrid(SDL_Renderer* _renderer);
-	std::list<glm::vec2> findPath(const glm::ivec2& _start, const glm::ivec2& _target);
+	std::list<glm::vec2> findPath(const glm::vec2& _start, const glm::vec2& _target);
 
 private:
+	void onStart();
+	void onDraw(SDL_Renderer* _renderer);
+
 	void loadTerrain();
+	void refreshNodes();
 
 	const int width = 10;
 	const int height = 10;

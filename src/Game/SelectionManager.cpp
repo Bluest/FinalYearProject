@@ -39,15 +39,13 @@ void SelectionManager::onUpdate()
 		// What did I click?
 		// What do I have selected?
 
-		std::list<glm::vec2> path;
-		path.push_back(glm::vec2(input->mousePosition()) / nodeSize);
-		
 		// if mousePosition isn't over an ally or enemy unit (so it's over the ground)
+		glm::vec2 worldPosition = (glm::vec2(input->mousePosition()) - nodeSize / 2) / nodeSize;
+
+		// Attempt to move selected units to the position clicked
 		for (auto it = selection.begin(); it != selection.end(); ++it)
 		{
-			(*it)->getComponent<Navigation>()->setPath(path);
-			//(*it)->getComponent<Navigation>()->move(input->mousePosition());
-			// Navigation::move gets a path from Map::findPath and passes it to setPath privately
+			(*it)->getComponent<Navigation>()->move(worldPosition);
 		}
 	}
 
