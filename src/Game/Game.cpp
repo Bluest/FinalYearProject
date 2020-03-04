@@ -1,6 +1,7 @@
 #include "CircleRenderer.h"
 #include "Game.h"
 #include "Navigation.h"
+#include "Selectable.h"
 #include "SelectionManager.h"
 
 Game::Game()
@@ -18,13 +19,20 @@ void Game::start()
 	selectionManager->addSelectableEntity(unit);
 	unit->transform.position = glm::vec3(3.0f, 0.0f, 2.0f);
 
+	std::shared_ptr<Selectable> selectable =
+		unit->addComponent<Selectable>();
+	std::shared_ptr<Navigation> navigation =
+		unit->addComponent<Navigation>();
 	std::shared_ptr<CircleRenderer> circle =
 		unit->addComponent<CircleRenderer>();
 
-	std::shared_ptr<Navigation> navigation =
-		unit->addComponent<Navigation>();
+	std::shared_ptr<Entity> unit2 = core->addEntity();
+	selectionManager->addSelectableEntity(unit2);
+	unit2->transform.position = glm::vec3(5.0f, 0.0f, 2.0f);
 
-	selectionManager->select(unit);
+	unit2->addComponent<Selectable>();
+	unit2->addComponent<Navigation>();
+	unit2->addComponent<CircleRenderer>();
 
 	core->run();
 }

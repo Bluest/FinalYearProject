@@ -45,6 +45,8 @@ add_executable(Game
 	src/Game/Object.h
 	src/Game/ProtoFactory.cpp
 	src/Game/ProtoFactory.h
+	src/Game/Selectable.cpp
+	src/Game/Selectable.h
 	src/Game/SelectableObject.cpp
 	src/Game/SelectableObject.h
 	src/Game/SelectionManager.cpp
