@@ -16,9 +16,11 @@ void Map::onStart()
 		}
 	}
 
+	loadTerrain();
+
 	// Set neighbours
-	const int neighbourX[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
-	const int neighbourY[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
+	const int dx[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+	const int dy[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
 
 	// For each node...
 	for (int y = 0; y < height; ++y)
@@ -28,17 +30,35 @@ void Map::onStart()
 			// For each neighbour...
 			for (int i = 0; i < 8; ++i)
 			{
+				const int neighbourX = x + dx[i];
+				const int neighbourY = y + dy[i];
+
 				// If this neighbour is not out of bounds...
-				if (x + neighbourX[i] >= 0 && x + neighbourX[i] < width &&
-					y + neighbourY[i] >= 0 && y + neighbourY[i] < height)
+				if (neighbourX >= 0 && neighbourX < width &&
+					neighbourY >= 0 && neighbourY < height)
 				{
-					nodes[y][x]->neighbours.push_back(nodes[y + neighbourY[i]][x + neighbourX[i]]);
+					// If this neighbour isn't diagonally adjacent...
+					if (dx[i] == 0 || dy[i] == 0)
+					{
+						// Add neighbour
+						nodes[y][x]->neighbours.push_back(nodes[neighbourY][neighbourX]);
+					}
+					else // Diagonal
+					{
+						// If this diagonal isn't blocked by a corner...
+						if (!nodes[neighbourY][x]->isTerrain)
+						{
+							if (!nodes[y][neighbourX]->isTerrain)
+							{
+								// Add neighbour
+								nodes[y][x]->neighbours.push_back(nodes[neighbourY][neighbourX]);
+							}
+						}
+					}
 				}
 			}
 		}
 	}
-
-	loadTerrain();
 }
 
 void Map::onDraw(SDL_Renderer* _renderer)
