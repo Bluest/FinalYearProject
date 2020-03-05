@@ -1,15 +1,18 @@
 #include "Core.h"
 #include "Entity.h"
 #include "Input.h"
+#include "Time.h"
 
-std::shared_ptr<Core> Core::init(const int& _winW, const int& _winH)
+std::shared_ptr<Core> Core::init(const int& _winW, const int& _winH, const float& _fpsCap)
 {
 	std::shared_ptr<Core> core = std::make_shared<Core>();
-	core->self = core;
-	core->input = std::make_shared<Input>();
 
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_CreateWindowAndRenderer(_winW, _winH, 0, &core->window, &core->renderer);
+
+	core->self = core;
+	core->input = std::make_shared<Input>();
+	core->time = std::make_unique<Time>(_fpsCap);
 
 	return core;
 }
@@ -31,6 +34,11 @@ std::shared_ptr<Entity> Core::addEntity()
 	return entity;
 }
 
+float Core::getDeltaTime()
+{
+	return time->getDelta();
+}
+
 std::shared_ptr<Input> Core::getInput()
 {
 	return input;
@@ -43,6 +51,8 @@ void Core::run()
 		(*it)->start();
 	}
 
+	time->start();
+
 	while (input->processInput())
 	{
 		for (auto it = entities.begin(); it != entities.end(); ++it)
@@ -52,7 +62,7 @@ void Core::run()
 
 		draw();
 
-		//time->tick();
+		time->tick();
 	}
 }
 

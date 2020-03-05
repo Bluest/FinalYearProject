@@ -27,7 +27,7 @@ void Navigation::setMap(const std::shared_ptr<Map>& _map)
 
 void Navigation::onStart()
 {
-	speed = 0.005f;
+	speed = 5.0f;
 	position.x = getEntity()->transform.position.x;
 	position.y = getEntity()->transform.position.z;
 	step = glm::vec2(0.0f, 0.0f);
@@ -39,7 +39,7 @@ void Navigation::onUpdate()
 {
 	if (!path.empty())
 	{
-		position += step;
+		position += step * getCore()->getDeltaTime();
 
 		// Check for collisions
 		// If this position overlaps with another unit, push both (or just self) back from the point of collision, but not into a terrain tile

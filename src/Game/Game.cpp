@@ -7,7 +7,7 @@
 
 Game::Game()
 {
-	core = Core::init(500, 500);
+	core = Core::init(500, 500, 60.0f);
 }
 
 void Game::start()
