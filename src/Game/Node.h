@@ -11,7 +11,7 @@ public:
 	Node(const int& _x, const int& _y);
 
 private:
-	void updateCosts(std::shared_ptr<Node> _parent, std::shared_ptr<Node> _target);
+	void updateCosts(std::shared_ptr<Node> _parent, const int& _parentDistance, std::shared_ptr<Node> _target);
 
 	bool isTerrain;
 	glm::ivec2 pos;

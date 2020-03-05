@@ -17,8 +17,8 @@ void Map::onStart()
 	}
 
 	// Set neighbours
-	const int neighbourX[4] = { 0, 1, 0, -1 };
-	const int neighbourY[4] = { -1, 0, 1, 0 };
+	const int neighbourX[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+	const int neighbourY[8] = { -1, -1, -1, 0, 1, 1, 1, 0 };
 
 	// For each node...
 	for (int y = 0; y < height; ++y)
@@ -26,7 +26,7 @@ void Map::onStart()
 		for (int x = 0; x < width; ++x)
 		{
 			// For each neighbour...
-			for (int i = 0; i < 4; ++i)
+			for (int i = 0; i < 8; ++i)
 			{
 				// If this neighbour is not out of bounds...
 				if (x + neighbourX[i] >= 0 && x + neighbourX[i] < width &&
@@ -79,14 +79,14 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 	std::shared_ptr<Node> start = nodes[int(_start.y + 0.5f)][int(_start.x + 0.5f)];
 	std::shared_ptr<Node> target = nodes[int(_target.y + 0.5f)][int(_target.x + 0.5f)];
 
-	if (start == target)
+	if (target->isTerrain)
 	{
-		path.push_back(target->pos);
 		return path;
 	}
 
-	if (target->isTerrain)
+	if (start == target)
 	{
+		path.push_back(target->pos);
 		return path;
 	}
 
@@ -103,10 +103,13 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 				continue;
 			}
 
+			// d = distance from current node to neighbour (10 or 14)
+			int d = (current->pos.x == (*it)->pos.x || current->pos.y == (*it)->pos.y) ? 10 : 14;
+
 			// If this path is shorter or neighbour is not in open...
-			if (current->gCost + 1 < (*it)->gCost || std::find(open.begin(), open.end(), *it) == open.end())
+			if (current->gCost + d < (*it)->gCost || std::find(open.begin(), open.end(), *it) == open.end())
 			{
-				(*it)->updateCosts(current, target);
+				(*it)->updateCosts(current, d, target);
 
 				// If neighbour is not in open, add it
 				if (std::find(open.begin(), open.end(), *it) == open.end())
@@ -122,6 +125,7 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 		}
 		else
 		{
+			// No path
 			return path;
 		}
 
@@ -138,6 +142,7 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 
 		if (current == target)
 		{
+			// Path found
 			while (current != start)
 			{
 				path.push_front(current->pos);

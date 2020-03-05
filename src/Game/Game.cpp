@@ -22,7 +22,7 @@ void Game::start()
 
 	std::shared_ptr<Entity> unit = core->addEntity();
 	selectionManager->addSelectableEntity(unit);
-	unit->transform.position = glm::vec3(3.0f, 0.0f, 1.0f);
+	unit->transform.position = glm::vec3(0.0f, 0.0f, 19.0f);
 	unit->transform.scale *= 0.8f;
 
 	std::shared_ptr<Selectable> selectable =
@@ -35,7 +35,7 @@ void Game::start()
 
 	std::shared_ptr<Entity> unit2 = core->addEntity();
 	selectionManager->addSelectableEntity(unit2);
-	unit2->transform.position = glm::vec3(5.0f, 0.0f, 2.0f);
+	unit2->transform.position = glm::vec3(1.0f, 0.0f, 19.0f);
 	unit2->transform.scale *= 0.8f;
 
 	std::shared_ptr<Selectable> selectable2 =

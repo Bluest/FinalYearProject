@@ -6,5 +6,5 @@ public:
 	bool isClicked(const glm::ivec2& _clickPosition);
 
 private:
-	const float nodeSize = 50.0f;
+	const float nodeSize = 25.0f;
 };

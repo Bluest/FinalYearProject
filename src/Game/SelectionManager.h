@@ -11,7 +11,7 @@ private:
 	void onStart();
 	void onUpdate();
 
-	const float nodeSize = 50.0f;
+	const float nodeSize = 25.0f;
 
 	// Shortcut pointer to Core::Input
 	std::shared_ptr<Input> input;

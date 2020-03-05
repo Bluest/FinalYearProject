@@ -5,5 +5,5 @@ class CircleRenderer : public Component
 private:
 	void onDraw(SDL_Renderer* _renderer);
 
-	const float nodeSize = 50.0f;
+	const float nodeSize = 25.0f;
 };

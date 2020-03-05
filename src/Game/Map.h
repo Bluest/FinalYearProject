@@ -16,9 +16,9 @@ private:
 	void loadTerrain();
 	void refreshNodes();
 
-	const int width = 10;
-	const int height = 10;
-	const int nodeSize = 50;
+	const int width = 20;
+	const int height = 20;
+	const int nodeSize = 25;
 
 	std::vector<std::vector<std::shared_ptr<Node>>> nodes;
 };
