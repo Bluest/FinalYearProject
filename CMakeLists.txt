@@ -51,8 +51,6 @@ add_executable(Game
 	src/Game/SelectableObject.h
 	src/Game/SelectionManager.cpp
 	src/Game/SelectionManager.h
-	src/Game/Unit.cpp
-	src/Game/Unit.h
 )
 target_link_libraries(Game Engine)
 

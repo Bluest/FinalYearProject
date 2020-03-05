@@ -143,7 +143,6 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 				path.push_front(current->pos);
 				current = current->parent;
 			}
-			path.push_front(start->pos);
 
 			return path;
 		}

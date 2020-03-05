@@ -1,6 +1,5 @@
 #include "GameState.h"
 #include "ProtoFactory.h"
-#include "Unit.h"
 
 ProtoFactory::ProtoFactory(/*Type*/const float& _size, const glm::vec2& _position, const std::shared_ptr<GameState>& _gameState) : Building(_size, _position)
 {
@@ -48,7 +47,7 @@ void ProtoFactory::onLeftClick()
 	case 3: spawnPos = glm::vec2(125.0f, 475.0f); break;
 	}
 
-	gameState.lock()->addSO(std::make_shared<Unit>(20.0f, 5.0f, spawnPos));
+	//gameState.lock()->addSO(std::make_shared<Unit>(20.0f, 5.0f, spawnPos));
 	// TODO: world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f }
 	// as soon as OpenGL rendering is integrated
 }
