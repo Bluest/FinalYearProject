@@ -1,21 +1,21 @@
-#include <memory>
-
-#include "glm/vec2.hpp"
-#include "SDL2/SDL_render.h"
-
-#include "Building.h"
+#include "Engine.h"
 
 class GameState;
 
-class ProtoFactory : public Building
+class ProtoFactory : public Component
 {
 public:
-	ProtoFactory(/*Type*/const float& _size, const glm::vec2& _position, const std::shared_ptr<GameState>& _gameState);
-
-	void draw(SDL_Renderer* _renderer);
-	void onLeftClick();
+	void createUnit();
 
 private:
-	std::weak_ptr<GameState> gameState;
+	void onStart();
+	void onDraw(SDL_Renderer* _renderer);
+
+	const float nodeSize = 25.0f;
+
+	// Drawing values
+	glm::vec2 position;
+	float size;
 	SDL_FRect rect;
+	float circleSize;
 };

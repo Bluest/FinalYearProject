@@ -1,5 +1,6 @@
 #include "CircleRenderer.h"
 #include "Game.h"
+#include "ProtoFactory.h"
 #include "Map.h"
 #include "Navigation.h"
 #include "Selectable.h"
@@ -19,6 +20,16 @@ void Game::start()
 	std::shared_ptr<Entity> environment = core->addEntity();
 	std::shared_ptr<Map> map =
 		environment->addComponent<Map>();
+
+	std::shared_ptr<Entity> building = core->addEntity();
+	selectionManager->addSelectableEntity(building);
+	building->transform.position = glm::vec3(1.5f, 0.0f, 17.5f);
+	building->transform.scale *= 2.0f;
+
+	std::shared_ptr<ProtoFactory> protofactory =
+		building->addComponent<ProtoFactory>();
+	std::shared_ptr<Selectable> buildingSelectable =
+		building->addComponent<Selectable>();
 
 	std::shared_ptr<Entity> unit = core->addEntity();
 	selectionManager->addSelectableEntity(unit);

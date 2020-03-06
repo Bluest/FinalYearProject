@@ -46,7 +46,11 @@ void SelectionManager::onUpdate()
 		// Attempt to move selected units to the position clicked
 		for (auto it = selection.begin(); it != selection.end(); ++it)
 		{
-			(*it)->getComponent<Navigation>()->move(worldPosition);
+			// If the entity has a Navigation component, Navigation::move to click position
+			if ((*it)->getComponent<Navigation>())
+			{
+				(*it)->getComponent<Navigation>()->move(worldPosition);
+			}
 		}
 	}
 

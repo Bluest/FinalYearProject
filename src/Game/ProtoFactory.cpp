@@ -1,16 +1,20 @@
 #include "GameState.h"
 #include "ProtoFactory.h"
 
-ProtoFactory::ProtoFactory(/*Type*/const float& _size, const glm::vec2& _position, const std::shared_ptr<GameState>& _gameState) : Building(_size, _position)
+void ProtoFactory::onStart()
 {
-	gameState = _gameState;
-	rect = { _position.x - _size, _position.y - _size, 2 * _size, 2 * _size };
+	position = glm::vec2(
+		getEntity()->transform.position.x * nodeSize + nodeSize / 2,
+		getEntity()->transform.position.z * nodeSize + nodeSize / 2);
+
+	size = getEntity()->transform.scale.x * nodeSize / 2;
+
+	rect = { position.x - size, position.y - size, 2 * size, 2 * size };
+	circleSize = size * 0.8f;
 }
 
-void ProtoFactory::draw(SDL_Renderer* _renderer)
+void ProtoFactory::onDraw(SDL_Renderer* _renderer)
 {
-	float circleSize = size * 0.8f;
-
 	// Fill
 	// Square
 	SDL_SetRenderDrawColor(_renderer, 128, 0, 0, 255);
@@ -34,7 +38,7 @@ void ProtoFactory::draw(SDL_Renderer* _renderer)
 	SDL_RenderDrawRectF(_renderer, &rect);
 }
 
-void ProtoFactory::onLeftClick()
+void ProtoFactory::createUnit()
 {
 	int randSpawn = rand() % 4;
 	glm::vec2 spawnPos;
