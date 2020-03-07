@@ -39,7 +39,7 @@ void SelectionManager::onUpdate()
 		// What did I click?
 		// What do I have selected?
 
-		// if mousePosition isn't over an ally or enemy unit (so it's over the ground)
+		// if mousePosition isn't over an enemy unit (so it's not an attack command)
 		glm::vec2 worldPosition = (glm::vec2(input->mousePosition()) - nodeSize / 2) / nodeSize;
 		// "move here" animation on ground
 
@@ -62,7 +62,12 @@ void SelectionManager::onUpdate()
 			// also depends which object's commands are current
 			// command menu is for a unit and has stop? hell yeah
 			// command menu is for a building and doesn't? no stoppin'
-			(*it)->getComponent<Navigation>()->stop();
+
+			// If the entity has a Navigation component, Navigation::stop
+			if ((*it)->getComponent<Navigation>())
+			{
+				(*it)->getComponent<Navigation>()->stop();
+			}
 		}
 	}
 }

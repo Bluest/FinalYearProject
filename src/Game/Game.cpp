@@ -1,4 +1,5 @@
 #include "CircleRenderer.h"
+#include "CommandManager.h"
 #include "Game.h"
 #include "ProtoFactory.h"
 #include "Map.h"
@@ -8,7 +9,7 @@
 
 Game::Game()
 {
-	core = Core::init(500, 500, 60.0f);
+	core = Core::init(500, 600, 60.0f);
 }
 
 void Game::start()
@@ -16,6 +17,8 @@ void Game::start()
 	std::shared_ptr<Entity> player = core->addEntity();
 	std::shared_ptr<SelectionManager> selectionManager =
 		player->addComponent<SelectionManager>();
+	std::shared_ptr<CommandManager> commandManager =
+		player->addComponent<CommandManager>();
 
 	std::shared_ptr<Entity> environment = core->addEntity();
 	std::shared_ptr<Map> map =

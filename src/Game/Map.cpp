@@ -96,8 +96,18 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 	std::list<glm::vec2> path;
 
 	// Round positions to nearest int
-	std::shared_ptr<Node> start = nodes[int(_start.y + 0.5f)][int(_start.x + 0.5f)];
-	std::shared_ptr<Node> target = nodes[int(_target.y + 0.5f)][int(_target.x + 0.5f)];
+	glm::ivec2 startNodePos = _start + 0.5f;
+	glm::ivec2 targetNodePos = _target + 0.5f;
+
+	// If the target is out of bounds, don't proceed
+	if (targetNodePos.x < 0 || targetNodePos.x >= width ||
+		targetNodePos.y < 0 || targetNodePos.y >= width)
+	{
+		return path;
+	}
+
+	std::shared_ptr<Node> start = nodes[startNodePos.y][startNodePos.x];
+	std::shared_ptr<Node> target = nodes[targetNodePos.y][targetNodePos.x];
 
 	if (target->isTerrain)
 	{
