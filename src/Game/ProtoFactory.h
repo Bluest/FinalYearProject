@@ -13,6 +13,8 @@ private:
 
 	const float nodeSize = 25.0f;
 
+	// May need a pointer to the Map to create units and set Node::walkable
+
 	// Drawing values
 	glm::vec2 position;
 	float size;

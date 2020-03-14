@@ -78,9 +78,9 @@ bool Input::mouseRelease(const int& _button)
 	return false;
 }
 
-glm::ivec2 Input::mousePosition()
+SDL_Point Input::mousePosition()
 {
-	glm::ivec2 position;
+	SDL_Point position;
 	SDL_GetMouseState(&position.x, &position.y);
 
 	return position;

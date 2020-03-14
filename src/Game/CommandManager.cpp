@@ -7,8 +7,9 @@ void CommandManager::onStart()
 
 void CommandManager::onUpdate()
 {
-	if (input->keyPress(SDLK_1))
+	if (input->mousePress(SDL_BUTTON_LEFT))
 	{
-		printf("1\n");
+		SDL_Point clickPosition = input->mousePosition();
+		printf("%i, %i\n", clickPosition.x, clickPosition.y);
 	}
 }

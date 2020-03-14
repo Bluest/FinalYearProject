@@ -40,7 +40,7 @@ void SelectionManager::onUpdate()
 		// What do I have selected?
 
 		// if mousePosition isn't over an enemy unit (so it's not an attack command)
-		glm::vec2 worldPosition = (glm::vec2(input->mousePosition()) - nodeSize / 2) / nodeSize;
+		glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
 		// "move here" animation on ground
 
 		// Attempt to move selected units to the position clicked

@@ -1,7 +1,6 @@
 #include <list>
 
 #include "SDL2/SDL_events.h"
-#include "glm/vec2.hpp"
 
 class Input
 {
@@ -15,7 +14,7 @@ public:
 	bool mouseHold(const int& _button);
 	bool mousePress(const int& _button);
 	bool mouseRelease(const int& _button);
-	glm::ivec2 mousePosition();
+	SDL_Point mousePosition();
 
 	bool processInput();
 
