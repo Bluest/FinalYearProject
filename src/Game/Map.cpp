@@ -46,9 +46,9 @@ void Map::onStart()
 					else // Diagonal
 					{
 						// If this diagonal isn't blocked by a corner...
-						if (!nodes[neighbourY][x]->isTerrain)
+						if (nodes[neighbourY][x]->walkable)
 						{
-							if (!nodes[y][neighbourX]->isTerrain)
+							if (nodes[y][neighbourX]->walkable)
 							{
 								// Add neighbour
 								nodes[y][x]->neighbours.push_back(nodes[neighbourY][neighbourX]);
@@ -71,13 +71,10 @@ void Map::onDraw(SDL_Renderer* _renderer)
 		{
 			nodePos = { nodeSize * x, nodeSize * y, nodeSize + 1, nodeSize + 1 };
 
-			if (nodes[y][x]->isTerrain)
+			if (nodes[y][x]->walkable)
 			{
-				SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+				SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
 				SDL_RenderFillRect(_renderer, &nodePos);
-			}
-			else
-			{
 				SDL_SetRenderDrawColor(_renderer, 224, 224, 224, 255);
 				SDL_RenderDrawRect(_renderer, &nodePos);
 			}
@@ -109,7 +106,7 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 	std::shared_ptr<Node> start = nodes[startNodePos.y][startNodePos.x];
 	std::shared_ptr<Node> target = nodes[targetNodePos.y][targetNodePos.x];
 
-	if (target->isTerrain)
+	if (!target->walkable)
 	{
 		return path;
 	}
@@ -127,8 +124,8 @@ std::list<glm::vec2> Map::findPath(const glm::vec2& _start, const glm::vec2& _ta
 	{
 		for (auto it = current->neighbours.begin(); it != current->neighbours.end(); ++it)
 		{
-			// If neighbour is terrain or is in closed, continue to next neighbour
-			if ((*it)->isTerrain || std::find(closed.begin(), closed.end(), *it) != closed.end())
+			// If neighbour isn't walkable or is in closed, continue to next neighbour
+			if (!(*it)->walkable || std::find(closed.begin(), closed.end(), *it) != closed.end())
 			{
 				continue;
 			}
@@ -196,7 +193,7 @@ void Map::loadTerrain()
 		{
 			if (line[x] == '#')
 			{
-				nodes[y][x]->isTerrain = true;
+				nodes[y][x]->walkable = false;
 			}
 		}
 	}

@@ -5,7 +5,7 @@ Node::Node(const int& _x, const int& _y)
 	pos.x = _x;
 	pos.y = _y;
 
-	isTerrain = false;
+	walkable = true;
 	fCost = 0;
 	gCost = 0;
 	hCost = 0;

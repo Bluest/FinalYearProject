@@ -1,11 +1,6 @@
 #include "Component.h"
 #include "Entity.h"
 
-std::shared_ptr<Core> Entity::getCore()
-{
-	return core.lock();
-}
-
 void Entity::start()
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
@@ -28,4 +23,9 @@ void Entity::draw(SDL_Renderer* _renderer)
 	{
 		(*it)->onDraw(_renderer);
 	}
+}
+
+std::shared_ptr<Core> Entity::getCore()
+{
+	return core.lock();
 }

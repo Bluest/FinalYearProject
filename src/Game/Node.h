@@ -13,7 +13,7 @@ public:
 private:
 	void updateCosts(std::shared_ptr<Node> _parent, const int& _parentDistance, std::shared_ptr<Node> _target);
 
-	bool isTerrain;
+	bool walkable;
 	glm::ivec2 pos;
 	int fCost;
 	int gCost;
