@@ -26,12 +26,11 @@ void SelectionManager::onUpdate()
 			if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
 			{
 				selection.push_back(*it);
-				//(*it)->onLeftClick();
+				// commandManager->setCommands();
+				// set Command targets
 				break;
 			}
 		}
-
-		if (!selection.empty()) printf("Selected %p\n", selection.front().get()); else printf("No selection\n");
 	}
 
 	if (input->mousePress(SDL_BUTTON_RIGHT))

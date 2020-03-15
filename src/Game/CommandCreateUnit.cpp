@@ -2,5 +2,5 @@
 
 void CommandCreateUnit::action()
 {
-	printf("Create unit");
+	printf("Create unit\n");
 }
