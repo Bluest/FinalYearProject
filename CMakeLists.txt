@@ -31,6 +31,8 @@ add_executable(Game
 	src/Game/Building.h
 	src/Game/CircleRenderer.cpp
 	src/Game/CircleRenderer.h
+	src/Game/Command.cpp
+	src/Game/Command.h
 	src/Game/CommandCreateUnit.cpp
 	src/Game/CommandCreateUnit.h
 	src/Game/CommandManager.cpp

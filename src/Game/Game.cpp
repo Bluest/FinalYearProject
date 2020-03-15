@@ -1,4 +1,5 @@
 #include "CircleRenderer.h"
+#include "CommandCreateUnit.h"
 #include "CommandManager.h"
 #include "Game.h"
 #include "ProtoFactory.h"
@@ -14,16 +15,25 @@ Game::Game()
 
 void Game::start()
 {
+	// Player
 	std::shared_ptr<Entity> player = core->addEntity();
 	std::shared_ptr<SelectionManager> selectionManager =
 		player->addComponent<SelectionManager>();
 	std::shared_ptr<CommandManager> commandManager =
 		player->addComponent<CommandManager>();
 
+	std::vector<std::vector<std::shared_ptr<Command>>> protoCommands;
+	protoCommands.resize(1);
+	protoCommands.front().resize(1);
+	protoCommands[0][0] = std::make_shared<CommandCreateUnit>();
+	commandManager->setCommands(protoCommands);
+
+	// Map
 	std::shared_ptr<Entity> environment = core->addEntity();
 	std::shared_ptr<Map> map =
 		environment->addComponent<Map>();
 
+	// Building
 	std::shared_ptr<Entity> building = core->addEntity();
 	selectionManager->addSelectableEntity(building);
 	building->transform.position = glm::vec3(1.5f, 0.0f, 17.5f);
@@ -34,6 +44,7 @@ void Game::start()
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
 
+	// Units
 	std::shared_ptr<Entity> unit = core->addEntity();
 	selectionManager->addSelectableEntity(unit);
 	unit->transform.position = glm::vec3(0.0f, 0.0f, 19.0f);
@@ -62,17 +73,3 @@ void Game::start()
 
 	core->run();
 }
-
-/*void Game::run()
-{
-	gameState->addSO(std::make_shared<ProtoFactory>(50.0f, glm::vec2(50.0f, 450.0f), gameState));
-
-	while (player->handleInput())
-	{
-		gameState->update(); // deltaTime in Game or GameState?
-		gameState->draw(renderer);
-
-		// TODO: Time Class
-		SDL_Delay(16);
-	}
-}*/
