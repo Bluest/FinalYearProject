@@ -1,3 +1,4 @@
+#include "CommandManager.h"
 #include "Selectable.h"
 #include "SelectionManager.h"
 #include "Navigation.h"
@@ -5,6 +6,11 @@
 void SelectionManager::addSelectableEntity(const std::shared_ptr<Entity>& _entity)
 {
 	selectableEntities.push_back(_entity);
+}
+
+void SelectionManager::setCommandManager(const std::shared_ptr<CommandManager>& _commandManager)
+{
+	commandManager = _commandManager;
 }
 
 void SelectionManager::onStart()
@@ -22,11 +28,14 @@ void SelectionManager::onUpdate()
 		selection.clear();
 		for (auto it = selectableEntities.begin(); it != selectableEntities.end(); ++it)
 		{
+			std::shared_ptr<Selectable> currentSelectable = (*it)->getComponent<Selectable>();
+
 			// If an object is clicked, select it
-			if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
+			if (currentSelectable->isClicked(input->mousePosition()))
 			{
 				selection.push_back(*it);
-				// commandManager->setCommands();
+				commandManager->setCommands(currentSelectable->getCommands());
+				commandManager->setTarget(*it);
 				// set Command targets
 				break;
 			}

@@ -1,14 +1,23 @@
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
 
-void CommandManager::setCommands(const std::vector<std::vector<std::shared_ptr<Command>>>& _commands)
+void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Command>, 3>, 2>& _commands)
 {
 	commands = _commands;
+}
 
-	commands.resize(slotRows);
-	for (size_t y = 0; y < slotRows; ++y)
+void CommandManager::setTarget(const std::shared_ptr<Entity>& _target)
+{
+	for (size_t y = 0; y < 2; ++y)
 	{
-		commands[y].resize(slotColumns);
+		for (size_t x = 0; x < 3; ++x)
+		{
+			if (commands[y][x])
+			{
+				commands[y][x]->getTargets().clear();
+				commands[y][x]->getTargets().push_back(_target);
+			}
+		}
 	}
 }
 
@@ -32,9 +41,9 @@ void CommandManager::onUpdate()
 		SDL_Point clickPosition = input->mousePosition();
 		if (SDL_PointInRect(&clickPosition, &cardPosition))
 		{
-			for (size_t y = 0; y < commands.size(); ++y)
+			for (size_t y = 0; y < 2; ++y)
 			{
-				for (size_t x = 0; x < commands[y].size(); ++x)
+				for (size_t x = 0; x < 3; ++x)
 				{
 					if (commands[y][x])
 					{
@@ -61,9 +70,9 @@ void CommandManager::onDraw(SDL_Renderer* _renderer)
 	SDL_RenderFillRect(_renderer, &cardPosition);
 
 	SDL_SetRenderDrawColor(_renderer, 192, 192, 192, 255);
-	for (size_t y = 0; y < slotRows; ++y)
+	for (size_t y = 0; y < 2; ++y)
 	{
-		for (size_t x = 0; x < slotColumns; ++x)
+		for (size_t x = 0; x < 3; ++x)
 		{
 			commandPosition.x = x * commandPosition.w + cardPosition.x;
 			commandPosition.y = y * commandPosition.h + cardPosition.y;

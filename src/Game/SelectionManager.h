@@ -1,5 +1,6 @@
 #include "Engine.h"
 
+class CommandManager;
 class Input;
 
 class SelectionManager : public Component
@@ -7,13 +8,15 @@ class SelectionManager : public Component
 public:
 	void addSelectableEntity(const std::shared_ptr<Entity>& _entity);
 
+	void setCommandManager(const std::shared_ptr<CommandManager>& _commandManager);
+
 private:
 	void onStart();
 	void onUpdate();
 
 	const float nodeSize = 25.0f;
 
-	// Shortcut pointer to Core::Input
+	std::shared_ptr<CommandManager> commandManager;
 	std::shared_ptr<Input> input;
 
 	std::list<std::shared_ptr<Entity>> selectableEntities;

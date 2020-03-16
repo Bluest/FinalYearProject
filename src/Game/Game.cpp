@@ -21,12 +21,7 @@ void Game::start()
 		player->addComponent<SelectionManager>();
 	std::shared_ptr<CommandManager> commandManager =
 		player->addComponent<CommandManager>();
-
-	std::vector<std::vector<std::shared_ptr<Command>>> protoCommands;
-	protoCommands.resize(1);
-	protoCommands.front().resize(1);
-	protoCommands[0][0] = std::make_shared<CommandCreateUnit>();
-	commandManager->setCommands(protoCommands);
+	selectionManager->setCommandManager(commandManager);
 
 	// Map
 	std::shared_ptr<Entity> environment = core->addEntity();
@@ -43,6 +38,7 @@ void Game::start()
 		building->addComponent<ProtoFactory>();
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
+	buildingSelectable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
 
 	// Units
 	std::shared_ptr<Entity> unit = core->addEntity();

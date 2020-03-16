@@ -11,6 +11,7 @@ class Command
 public:
 	virtual void action() = 0;
 
+	std::list<std::shared_ptr<Entity>> getTargets();
 	glm::ivec2 getUISlot();
 
 protected:

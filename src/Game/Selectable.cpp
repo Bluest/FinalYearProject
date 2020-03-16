@@ -1,5 +1,10 @@
 #include "Selectable.h"
 
+void Selectable::addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn)
+{
+	commands[_slotColumn][_slotRow] = _command;
+}
+
 bool Selectable::isClicked(const SDL_Point& _clickPosition)
 {
 	// Translate Entity's position from world space to screen space
@@ -13,4 +18,9 @@ bool Selectable::isClicked(const SDL_Point& _clickPosition)
 	clickBox.h = int(size);
 
 	return SDL_PointInRect(&_clickPosition, &clickBox);
+}
+
+std::array<std::array<std::shared_ptr<Command>, 3>, 2> Selectable::getCommands()
+{
+	return commands;
 }
