@@ -14,8 +14,6 @@ private:
 	void onStart();
 	void onUpdate();
 
-	const float nodeSize = 25.0f;
-
 	std::shared_ptr<CommandManager> commandManager;
 	std::shared_ptr<Input> input;
 

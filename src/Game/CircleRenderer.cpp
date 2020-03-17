@@ -1,4 +1,7 @@
+#include "glm/vec2.hpp"
+
 #include "CircleRenderer.h"
+#include "Constants.h"
 
 void CircleRenderer::onDraw(SDL_Renderer* _renderer)
 {

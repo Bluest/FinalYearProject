@@ -1,4 +1,5 @@
 #include "CommandManager.h"
+#include "Constants.h"
 #include "Selectable.h"
 #include "SelectionManager.h"
 #include "Navigation.h"

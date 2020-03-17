@@ -1,16 +1,16 @@
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
 
-void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Command>, 3>, 2>& _commands)
+void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows>& _commands)
 {
 	commands = _commands;
 }
 
 void CommandManager::setTarget(const std::shared_ptr<Entity>& _target)
 {
-	for (size_t y = 0; y < 2; ++y)
+	for (size_t y = 0; y < commandSlotRows; ++y)
 	{
-		for (size_t x = 0; x < 3; ++x)
+		for (size_t x = 0; x < commandSlotColumns; ++x)
 		{
 			if (commands[y][x])
 			{
@@ -41,9 +41,9 @@ void CommandManager::onUpdate()
 		SDL_Point clickPosition = input->mousePosition();
 		if (SDL_PointInRect(&clickPosition, &cardPosition))
 		{
-			for (size_t y = 0; y < 2; ++y)
+			for (size_t y = 0; y < commandSlotRows; ++y)
 			{
-				for (size_t x = 0; x < 3; ++x)
+				for (size_t x = 0; x < commandSlotColumns; ++x)
 				{
 					if (commands[y][x])
 					{
@@ -70,9 +70,9 @@ void CommandManager::onDraw(SDL_Renderer* _renderer)
 	SDL_RenderFillRect(_renderer, &cardPosition);
 
 	SDL_SetRenderDrawColor(_renderer, 192, 192, 192, 255);
-	for (size_t y = 0; y < 2; ++y)
+	for (size_t y = 0; y < commandSlotRows; ++y)
 	{
-		for (size_t x = 0; x < 3; ++x)
+		for (size_t x = 0; x < commandSlotColumns; ++x)
 		{
 			commandPosition.x = x * commandPosition.w + cardPosition.x;
 			commandPosition.y = y * commandPosition.h + cardPosition.y;

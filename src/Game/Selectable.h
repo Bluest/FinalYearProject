@@ -1,5 +1,6 @@
 #include <array>
 
+#include "Constants.h"
 #include "Engine.h"
 
 class Command;
@@ -10,10 +11,8 @@ public:
 	void addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn);
 	bool isClicked(const SDL_Point& _clickPosition);
 
-	std::array<std::array<std::shared_ptr<Command>, 3>, 2> getCommands();
+	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> getCommands();
 
 private:
-	const float nodeSize = 25.0f;
-
-	std::array<std::array<std::shared_ptr<Command>, 3>, 2> commands;
+	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> commands;
 };
