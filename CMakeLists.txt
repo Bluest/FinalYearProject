@@ -42,6 +42,8 @@ add_executable(Game
 	src/Game/Faction.h
 	src/Game/Game.cpp
 	src/Game/Game.h
+	src/Game/GameManager.cpp
+	src/Game/GameManager.h
 	src/Game/GameState.cpp
 	src/Game/GameState.h
 	src/Game/main.cpp

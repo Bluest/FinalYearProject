@@ -6,16 +6,18 @@
 #include "Engine.h"
 #include "glm/vec2.hpp"
 
+class Selectable;
+
 class Command
 {
 public:
 	virtual void action() = 0;
 
-	std::list<std::shared_ptr<Entity>> getTargets();
+	std::list<std::shared_ptr<Selectable>> getTargets();
 	glm::ivec2 getUISlot();
 
 protected:
-	std::list<std::shared_ptr<Entity>> targets;
+	std::list<std::shared_ptr<Selectable>> targets;
 	std::string name;
 	std::string description;
 	// Icon

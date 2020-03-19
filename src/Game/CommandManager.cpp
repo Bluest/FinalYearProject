@@ -6,7 +6,7 @@ void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Com
 	commands = _commands;
 }
 
-void CommandManager::setTarget(const std::shared_ptr<Entity>& _target)
+void CommandManager::setTarget(const std::shared_ptr<Selectable>& _target)
 {
 	for (size_t y = 0; y < commandSlotRows; ++y)
 	{

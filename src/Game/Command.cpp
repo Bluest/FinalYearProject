@@ -1,6 +1,6 @@
 #include "Command.h"
 
-std::list<std::shared_ptr<Entity>> Command::getTargets()
+std::list<std::shared_ptr<Selectable>> Command::getTargets()
 {
 	return targets;
 }
