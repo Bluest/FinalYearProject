@@ -3,12 +3,12 @@ cmake_minimum_required(VERSION 2.6)
 project(FinalYearProject)
 
 include_directories(
-	contrib/include
+	include
 	src/Engine
 )
 
 link_directories(
-	${CMAKE_SOURCE_DIR}/contrib/lib
+	${CMAKE_SOURCE_DIR}/lib
 )
 
 add_library(Engine
@@ -68,6 +68,6 @@ target_link_libraries(Game Engine)
 add_custom_command(TARGET Game
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
-		"${PROJECT_SOURCE_DIR}/contrib/lib/SDL2.dll"
+		"${PROJECT_SOURCE_DIR}/lib/SDL2.dll"
 		$<TARGET_FILE_DIR:Game>
 )
