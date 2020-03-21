@@ -13,11 +13,9 @@ class Command
 public:
 	virtual void action() = 0;
 
-	std::list<std::shared_ptr<Selectable>> getTargets();
 	glm::ivec2 getUISlot();
 
 protected:
-	std::list<std::shared_ptr<Selectable>> targets;
 	std::string name;
 	std::string description;
 	// Icon

@@ -36,8 +36,6 @@ void SelectionManager::onUpdate()
 			{
 				selection.push_back(*it);
 				commandManager->setCommands((*it)->getCommands());
-				commandManager->setTarget(*it);
-				// set Command targets
 				break;
 			}
 		}

@@ -10,7 +10,6 @@ class CommandManager : public Component
 {
 public:
 	void setCommands(const std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows>& _commands);
-	void setTarget(const std::shared_ptr<Selectable>& _target);
 
 private:
 	void onStart();

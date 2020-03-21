@@ -6,21 +6,6 @@ void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Com
 	commands = _commands;
 }
 
-void CommandManager::setTarget(const std::shared_ptr<Selectable>& _target)
-{
-	for (size_t y = 0; y < commandSlotRows; ++y)
-	{
-		for (size_t x = 0; x < commandSlotColumns; ++x)
-		{
-			if (commands[y][x])
-			{
-				commands[y][x]->getTargets().clear();
-				commands[y][x]->getTargets().push_back(_target);
-			}
-		}
-	}
-}
-
 void CommandManager::onStart()
 {
 	input = getCore()->getInput();
@@ -57,9 +42,6 @@ void CommandManager::onUpdate()
 					}
 				}
 			}
-			// for each command
-			// if (SDL_PointInRect(&clickPosition, &commandPosition))
-			// command->action();
 		}
 	}
 }
