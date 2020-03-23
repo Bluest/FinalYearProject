@@ -9,6 +9,7 @@ class Selectable;
 class CommandManager : public Component
 {
 public:
+	void setSelection(const std::shared_ptr<std::list<std::shared_ptr<Selectable>>>& _selection);
 	void setCommands(const std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows>& _commands);
 
 private:
@@ -19,8 +20,10 @@ private:
 	// Shortcut pointer to Core::Input
 	std::shared_ptr<Input> input;
 
-	// Consider fixed size arrays instead of vectors
+	// Pointer to SelectionManager::selection
+	std::shared_ptr<std::list<std::shared_ptr<Selectable>>> selection;
+
 	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> commands;
-	SDL_Rect cardPosition;
+	SDL_Rect panelPosition;
 	SDL_Rect commandPosition;
 };

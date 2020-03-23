@@ -12,6 +12,9 @@
 Game::Game()
 {
 	core = Core::init(500, 600, 60.0f);
+
+	// initCommands();
+	// CommandsList.h?
 }
 
 void Game::start()
@@ -24,13 +27,13 @@ void Game::start()
 		player->addComponent<CommandManager>();
 	selectionManager->setCommandManager(commandManager);
 
-	// Game
-	std::shared_ptr<Entity> game = core->addEntity();
+	// Game board
+	std::shared_ptr<Entity> gameBoard = core->addEntity();
 	std::shared_ptr<GameManager> gameManager =
-		game->addComponent<GameManager>();
+		gameBoard->addComponent<GameManager>();
 	selectionManager->setGameManager(gameManager);
 	std::shared_ptr<Map> map =
-		game->addComponent<Map>();
+		gameBoard->addComponent<Map>();
 
 	// Building
 	std::shared_ptr<Entity> building = core->addEntity();

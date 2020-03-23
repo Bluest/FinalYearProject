@@ -1,5 +1,4 @@
 #include "Constants.h"
-#include "GameState.h"
 #include "ProtoFactory.h"
 
 void ProtoFactory::onStart()

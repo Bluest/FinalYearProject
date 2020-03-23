@@ -1,5 +1,11 @@
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
+#include "Selectable.h"
+
+void CommandManager::setSelection(const std::shared_ptr<std::list<std::shared_ptr<Selectable>>>& _selection)
+{
+	selection = _selection;
+}
 
 void CommandManager::setCommands(const std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows>& _commands)
 {
@@ -10,10 +16,10 @@ void CommandManager::onStart()
 {
 	input = getCore()->getInput();
 
-	cardPosition.x = 350;
-	cardPosition.y = 500;
-	cardPosition.w = 150;
-	cardPosition.h = 100;
+	panelPosition.x = 350;
+	panelPosition.y = 500;
+	panelPosition.w = 150;
+	panelPosition.h = 100;
 
 	commandPosition.w = 50;
 	commandPosition.h = 50;
@@ -21,10 +27,13 @@ void CommandManager::onStart()
 
 void CommandManager::onUpdate()
 {
+	// for each command
+	// if (input->keyPress(hotkey))
+
 	if (input->mousePress(SDL_BUTTON_LEFT))
 	{
 		SDL_Point clickPosition = input->mousePosition();
-		if (SDL_PointInRect(&clickPosition, &cardPosition))
+		if (SDL_PointInRect(&clickPosition, &panelPosition))
 		{
 			for (size_t y = 0; y < commandSlotRows; ++y)
 			{
@@ -32,12 +41,18 @@ void CommandManager::onUpdate()
 				{
 					if (commands[y][x])
 					{
-						commandPosition.x = x * commandPosition.w + cardPosition.x;
-						commandPosition.y = y * commandPosition.h + cardPosition.y;
+						commandPosition.x = x * commandPosition.w + panelPosition.x;
+						commandPosition.y = y * commandPosition.h + panelPosition.y;
 
 						if (SDL_PointInRect(&clickPosition, &commandPosition))
 						{
-							commands[y][x]->action();
+							for (auto it = selection->begin(); it != selection->end(); ++it)
+							{
+								if ((*it)->hasCommand(commands[y][x]))
+								{
+									commands[y][x]->action();
+								}
+							}
 						}
 					}
 				}
@@ -49,15 +64,15 @@ void CommandManager::onUpdate()
 void CommandManager::onDraw(SDL_Renderer* _renderer)
 {
 	SDL_SetRenderDrawColor(_renderer, 128, 128, 128, 255);
-	SDL_RenderFillRect(_renderer, &cardPosition);
+	SDL_RenderFillRect(_renderer, &panelPosition);
 
 	SDL_SetRenderDrawColor(_renderer, 192, 192, 192, 255);
 	for (size_t y = 0; y < commandSlotRows; ++y)
 	{
 		for (size_t x = 0; x < commandSlotColumns; ++x)
 		{
-			commandPosition.x = x * commandPosition.w + cardPosition.x;
-			commandPosition.y = y * commandPosition.h + cardPosition.y;
+			commandPosition.x = x * commandPosition.w + panelPosition.x;
+			commandPosition.y = y * commandPosition.h + panelPosition.y;
 
 			if (commands[y][x])
 			{

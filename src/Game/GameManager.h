@@ -10,5 +10,7 @@ public:
 	std::list<std::shared_ptr<Selectable>> getSelectables();
 
 private:
+	// onStart() { map = getEntity()->getComponent<Map>() }
+
 	std::list<std::shared_ptr<Selectable>> selectables;
 };

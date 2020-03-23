@@ -5,6 +5,22 @@ void Selectable::addCommand(const std::shared_ptr<Command>& _command, const int&
 	commands[_slotColumn][_slotRow] = _command;
 }
 
+bool Selectable::hasCommand(const std::shared_ptr<Command>& _command)
+{
+	for (size_t y = 0; y < commandSlotRows; ++y)
+	{
+		for (size_t x = 0; x < commandSlotColumns; ++x)
+		{
+			if (commands[y][x] == _command)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool Selectable::isClicked(const SDL_Point& _clickPosition)
 {
 	// Translate Entity's position from world space to screen space
