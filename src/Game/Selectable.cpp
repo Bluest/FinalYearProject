@@ -2,7 +2,7 @@
 
 void Selectable::addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn)
 {
-	commands[_slotColumn][_slotRow] = _command;
+	commands[_slotRow][_slotColumn] = _command;
 }
 
 bool Selectable::hasCommand(const std::shared_ptr<Command>& _command)

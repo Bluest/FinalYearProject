@@ -5,10 +5,12 @@
 
 #include "Engine.h"
 
+class Selectable;
+
 class Command
 {
 public:
-	virtual void action() = 0;
+	virtual void action(const std::shared_ptr<Selectable>& _target) = 0;
 
 protected:
 	std::string name;

@@ -1,6 +1,7 @@
 #include "CircleRenderer.h"
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
+#include "CommandStop.h"
 #include "Game.h"
 #include "GameManager.h"
 #include "ProtoFactory.h"
@@ -55,6 +56,7 @@ void Game::start()
 	std::shared_ptr<Selectable> selectable =
 		unit->addComponent<Selectable>();
 	gameManager->addSelectable(selectable);
+	selectable->addCommand(std::make_shared<CommandStop>(), 0, 1);
 	std::shared_ptr<Navigation> navigation =
 		unit->addComponent<Navigation>();
 	navigation->setMap(map);
@@ -68,6 +70,7 @@ void Game::start()
 	std::shared_ptr<Selectable> selectable2 =
 		unit2->addComponent<Selectable>();
 	gameManager->addSelectable(selectable2);
+	selectable2->addCommand(std::make_shared<CommandStop>(), 0, 1);
 	std::shared_ptr<Navigation> navigation2 =
 		unit2->addComponent<Navigation>();
 	navigation2->setMap(map);

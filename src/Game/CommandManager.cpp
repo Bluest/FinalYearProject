@@ -50,7 +50,7 @@ void CommandManager::onUpdate()
 							{
 								if ((*it)->hasCommand(commands[y][x]))
 								{
-									commands[y][x]->action();
+									commands[y][x]->action(*it);
 								}
 							}
 						}
