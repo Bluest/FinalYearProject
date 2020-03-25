@@ -1,7 +1,8 @@
-#include "Constants.h"
+#include <array>
+
 #include "Engine.h"
 
-#include <array>
+#include "Constants.h"
 
 class Command;
 class Selectable;

@@ -2,6 +2,7 @@
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
 #include "CommandStop.h"
+#include "InputManager.h"
 #include "Game.h"
 #include "GameManager.h"
 #include "ProtoFactory.h"
@@ -20,19 +21,23 @@ Game::Game()
 
 void Game::start()
 {
+	// UI
+
 	// Player
 	std::shared_ptr<Entity> player = core->addEntity();
-	std::shared_ptr<SelectionManager> selectionManager =
-		player->addComponent<SelectionManager>();
-	std::shared_ptr<CommandManager> commandManager =
-		player->addComponent<CommandManager>();
-	selectionManager->setCommandManager(commandManager);
+	//std::shared_ptr<SelectionManager> selectionManager =
+	//	player->addComponent<SelectionManager>();
+	//std::shared_ptr<CommandManager> commandManager =
+	//	player->addComponent<CommandManager>();
+	//selectionManager->setCommandManager(commandManager);
+	std::shared_ptr<InputManager> inputManager =
+		player->addComponent<InputManager>();
 
 	// Game board
 	std::shared_ptr<Entity> gameBoard = core->addEntity();
 	std::shared_ptr<GameManager> gameManager =
 		gameBoard->addComponent<GameManager>();
-	selectionManager->setGameManager(gameManager);
+	inputManager->setGameManager(gameManager);
 	std::shared_ptr<Map> map =
 		gameBoard->addComponent<Map>();
 

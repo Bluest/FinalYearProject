@@ -37,6 +37,8 @@ add_executable(Game
 	src/Game/CommandStop.cpp
 	src/Game/CommandStop.h
 	src/Game/Constants.h
+	src/Game/InputManager.cpp
+	src/Game/InputManager.h
 	src/Game/Game.cpp
 	src/Game/Game.h
 	src/Game/GameManager.cpp

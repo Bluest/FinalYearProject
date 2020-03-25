@@ -12,5 +12,6 @@ public:
 private:
 	// onStart() { map = getEntity()->getComponent<Map>() }
 
+	// Should this be a pointer to a list instead? Faster copying?
 	std::list<std::shared_ptr<Selectable>> selectables;
 };
