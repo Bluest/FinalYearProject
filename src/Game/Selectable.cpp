@@ -5,6 +5,24 @@ std::shared_ptr<Entity> Selectable::pubEntity()
 	return getEntity();
 }
 
+void Selectable::addTag(const Tag& _tag)
+{
+	tags.push_back(_tag);
+}
+
+bool Selectable::hasTag(const Tag& _tag)
+{
+	for (auto it = tags.begin(); it != tags.end(); ++it)
+	{
+		if (*it == _tag)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Selectable::addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn)
 {
 	commands[_slotRow][_slotColumn] = _command;

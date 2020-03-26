@@ -57,6 +57,7 @@ void Game::start()
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
 	gameManager->addSelectable(buildingSelectable);
+	buildingSelectable->addTag(Selectable::Tag::BUILDING);
 	buildingSelectable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
 
 	// Units
@@ -67,6 +68,7 @@ void Game::start()
 	std::shared_ptr<Selectable> selectable =
 		unit->addComponent<Selectable>();
 	gameManager->addSelectable(selectable);
+	selectable->addTag(Selectable::Tag::UNIT);
 	selectable->addCommand(std::make_shared<CommandStop>(), 0, 1);
 	std::shared_ptr<Navigation> navigation =
 		unit->addComponent<Navigation>();
@@ -81,6 +83,7 @@ void Game::start()
 	std::shared_ptr<Selectable> selectable2 =
 		unit2->addComponent<Selectable>();
 	gameManager->addSelectable(selectable2);
+	selectable2->addTag(Selectable::Tag::UNIT);
 	selectable2->addCommand(std::make_shared<CommandStop>(), 0, 1);
 	std::shared_ptr<Navigation> navigation2 =
 		unit2->addComponent<Navigation>();
