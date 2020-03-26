@@ -1,5 +1,10 @@
 #include "Selectable.h"
 
+std::shared_ptr<Entity> Selectable::pubEntity()
+{
+	return getEntity();
+}
+
 void Selectable::addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn)
 {
 	commands[_slotRow][_slotColumn] = _command;

@@ -34,6 +34,8 @@ add_executable(Game
 	src/Game/CommandCreateUnit.h
 	src/Game/CommandManager.cpp
 	src/Game/CommandManager.h
+	src/Game/CommandMove.cpp
+	src/Game/CommandMove.h
 	src/Game/CommandStop.cpp
 	src/Game/CommandStop.h
 	src/Game/Constants.h

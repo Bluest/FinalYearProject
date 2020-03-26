@@ -1,6 +1,7 @@
 #include "CircleRenderer.h"
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
+#include "CommandMove.h"
 #include "CommandStop.h"
 #include "InputManager.h"
 #include "Game.h"
@@ -32,6 +33,11 @@ void Game::start()
 	//selectionManager->setCommandManager(commandManager);
 	std::shared_ptr<InputManager> inputManager =
 		player->addComponent<InputManager>();
+
+	// rightClickCommand[0]: Move
+	inputManager->addRightClickCommand(std::make_shared<CommandMove>());
+	// rightClickCommand[1]: Attack
+	// rightClickCommand[2]: Rally
 
 	// Game board
 	std::shared_ptr<Entity> gameBoard = core->addEntity();

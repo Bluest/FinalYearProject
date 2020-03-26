@@ -41,24 +41,4 @@ void SelectionManager::onUpdate()
 			}
 		}
 	}
-
-	//if (input->mousePress(SDL_BUTTON_RIGHT))
-	//{
-	//	// What did I click?
-	//	// What do I have selected?
-	//
-	//	// if mousePosition isn't over an enemy unit (so it's not an attack command)
-	//	glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
-	//	// "move here" animation on ground
-	//
-	//	// Attempt to move selected units to the position clicked
-	//	for (auto it = selection.begin(); it != selection.end(); ++it)
-	//	{
-	//		// If the entity has a Navigation component, Navigation::move to click position
-	//		if ((*it)->getComponent<Navigation>())
-	//		{
-	//			(*it)->getComponent<Navigation>()->move(worldPosition);
-	//		}
-	//	}
-	//}
 }

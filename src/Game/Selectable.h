@@ -8,6 +8,8 @@ class Command;
 class Selectable : public Component
 {
 public:
+	std::shared_ptr<Entity> pubEntity();
+
 	void addCommand(const std::shared_ptr<Command>& _command, const int& _slotRow, const int& _slotColumn);
 	bool hasCommand(const std::shared_ptr<Command>& _command);
 

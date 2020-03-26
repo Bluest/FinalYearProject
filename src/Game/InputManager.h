@@ -1,4 +1,5 @@
 #include <array>
+#include <vector>
 
 #include "Engine.h"
 
@@ -18,6 +19,8 @@ public:
 		AIM
 	};
 
+	void addRightClickCommand(const std::shared_ptr<Command>& _command);
+
 	void setGameManager(const std::shared_ptr<GameManager>& _gameManager);
 
 private:
@@ -30,6 +33,7 @@ private:
 	State state;
 	std::list<std::shared_ptr<Selectable>> selection;
 	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> commands;
+	std::vector<std::shared_ptr<Command>> rightClickCommands;
 
 	// UI
 	void onDraw(SDL_Renderer* _renderer);

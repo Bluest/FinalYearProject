@@ -3,6 +3,11 @@
 #include "InputManager.h"
 #include "Selectable.h"
 
+void InputManager::addRightClickCommand(const std::shared_ptr<Command>& _command)
+{
+	rightClickCommands.push_back(_command);
+}
+
 void InputManager::setGameManager(const std::shared_ptr<GameManager>& _gameManager)
 {
 	gameManager = _gameManager;
@@ -84,10 +89,23 @@ void InputManager::onUpdate()
 
 		if (input->mousePress(SDL_BUTTON_RIGHT))
 		{
-			printf("Current selection:\n");
+			// CommandManager::rightClick()
+
+			// What did I click?
+			// What do I have selected?
+
+			// if mousePosition isn't over an enemy unit (so it's not an attack command)
+			glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
+			// "move here" animation on ground
+
+			// Attempt to move selected units to the position clicked
 			for (auto it = selection.begin(); it != selection.end(); ++it)
 			{
-				printf("%p\n", (*it).get());
+				// If this is a unit, move
+				//if ((*it)->hasTag("Unit"))
+				{
+					rightClickCommands[0]->action(*it, worldPosition);
+				}
 			}
 		}
 
