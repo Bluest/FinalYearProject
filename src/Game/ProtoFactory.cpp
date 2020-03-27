@@ -1,5 +1,31 @@
 #include "Constants.h"
+#include "GameManager.h"
 #include "ProtoFactory.h"
+
+void ProtoFactory::createUnit()
+{
+	int randSpawn = rand() % 4;
+	glm::vec2 spawnPos;
+
+	switch (randSpawn)
+	{
+	case 0: spawnPos = glm::vec2(1.0f, 16.0f); break;
+	case 1: spawnPos = glm::vec2(2.0f, 16.0f); break;
+	case 2: spawnPos = glm::vec2(3.0f, 17.0f); break;
+	case 3: spawnPos = glm::vec2(3.0f, 18.0f); break;
+	}
+
+	std::shared_ptr<Entity> unit = gameManager.lock()->createUnit();
+
+	unit->transform.position.x = spawnPos.x;
+	unit->transform.position.z = spawnPos.y;
+	unit->transform.scale *= 0.8f;
+}
+
+void ProtoFactory::setGameManager(const std::shared_ptr<GameManager>& _gameManager)
+{
+	gameManager = _gameManager;
+}
 
 void ProtoFactory::onStart()
 {
@@ -36,22 +62,4 @@ void ProtoFactory::onDraw(SDL_Renderer* _renderer)
 	// Outline
 	SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
 	SDL_RenderDrawRectF(_renderer, &rect);
-}
-
-void ProtoFactory::createUnit()
-{
-	int randSpawn = rand() % 4;
-	glm::vec2 spawnPos;
-
-	switch (randSpawn)
-	{
-	case 0: spawnPos = glm::vec2(25.0f, 375.0f); break;
-	case 1: spawnPos = glm::vec2(75.0f, 375.0f); break;
-	case 2: spawnPos = glm::vec2(125.0f, 425.0f); break;
-	case 3: spawnPos = glm::vec2(125.0f, 475.0f); break;
-	}
-
-	//gameState.lock()->addSO(std::make_shared<Unit>(20.0f, 5.0f, spawnPos));
-	// TODO: world space should definitely be { 3.0f, 9.0f } instead of { 75.0f, 475.0f }
-	// as soon as OpenGL rendering is integrated
 }

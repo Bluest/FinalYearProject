@@ -57,39 +57,18 @@ void Game::start()
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
 	gameManager->addSelectable(buildingSelectable);
+	protofactory->setGameManager(gameManager);
 	buildingSelectable->addTag(Selectable::Tag::BUILDING);
 	buildingSelectable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
 
 	// Units
-	std::shared_ptr<Entity> unit = core->addEntity();
+	std::shared_ptr<Entity> unit = gameManager->createUnit();
 	unit->transform.position = glm::vec3(0.0f, 0.0f, 19.0f);
 	unit->transform.scale *= 0.8f;
 
-	std::shared_ptr<Selectable> selectable =
-		unit->addComponent<Selectable>();
-	gameManager->addSelectable(selectable);
-	selectable->addTag(Selectable::Tag::UNIT);
-	selectable->addCommand(std::make_shared<CommandStop>(), 0, 1);
-	std::shared_ptr<Navigation> navigation =
-		unit->addComponent<Navigation>();
-	navigation->setMap(map);
-	std::shared_ptr<CircleRenderer> circle =
-		unit->addComponent<CircleRenderer>();
-
-	std::shared_ptr<Entity> unit2 = core->addEntity();
+	std::shared_ptr<Entity> unit2 = gameManager->createUnit();
 	unit2->transform.position = glm::vec3(1.0f, 0.0f, 19.0f);
 	unit2->transform.scale *= 0.8f;
-
-	std::shared_ptr<Selectable> selectable2 =
-		unit2->addComponent<Selectable>();
-	gameManager->addSelectable(selectable2);
-	selectable2->addTag(Selectable::Tag::UNIT);
-	selectable2->addCommand(std::make_shared<CommandStop>(), 0, 1);
-	std::shared_ptr<Navigation> navigation2 =
-		unit2->addComponent<Navigation>();
-	navigation2->setMap(map);
-	std::shared_ptr<CircleRenderer> circle2 =
-		unit2->addComponent<CircleRenderer>();
 
 	core->run();
 }

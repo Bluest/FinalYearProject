@@ -1,6 +1,8 @@
 #include "CommandCreateUnit.h"
+#include "ProtoFactory.h"
+#include "Selectable.h"
 
 void CommandCreateUnit::action(const std::shared_ptr<Selectable>& _actor)
 {
-	printf("Create unit\n");
+	_actor->pubEntity()->getComponent<ProtoFactory>()->createUnit();
 }
