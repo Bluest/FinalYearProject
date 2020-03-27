@@ -1,3 +1,5 @@
+#include "glm/vec2.hpp"
+
 #include "CircleRenderer.h"
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
@@ -41,11 +43,11 @@ void Game::start()
 
 	// Game board
 	std::shared_ptr<Entity> gameBoard = core->addEntity();
+	std::shared_ptr<Map> map =
+		gameBoard->addComponent<Map>();
 	std::shared_ptr<GameManager> gameManager =
 		gameBoard->addComponent<GameManager>();
 	inputManager->setGameManager(gameManager);
-	std::shared_ptr<Map> map =
-		gameBoard->addComponent<Map>();
 
 	// Building
 	std::shared_ptr<Entity> building = core->addEntity();
@@ -62,12 +64,10 @@ void Game::start()
 	buildingSelectable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
 
 	// Units
-	std::shared_ptr<Entity> unit = gameManager->createUnit();
-	unit->transform.position = glm::vec3(0.0f, 0.0f, 19.0f);
+	std::shared_ptr<Entity> unit = gameManager->createUnit(glm::vec2(0.0f, 19.0f));
 	unit->transform.scale *= 0.8f;
 
-	std::shared_ptr<Entity> unit2 = gameManager->createUnit();
-	unit2->transform.position = glm::vec3(1.0f, 0.0f, 19.0f);
+	std::shared_ptr<Entity> unit2 = gameManager->createUnit(glm::vec2(1.0f, 19.0f));
 	unit2->transform.scale *= 0.8f;
 
 	core->run();

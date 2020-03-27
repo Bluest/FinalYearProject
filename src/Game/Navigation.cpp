@@ -1,6 +1,16 @@
 #include "Map.h"
 #include "Navigation.h"
 
+void Navigation::onInit()
+{
+	speed = 5.0f;
+	position.x = getEntity()->transform.position.x;
+	position.y = getEntity()->transform.position.z;
+	step = glm::vec2(0.0f, 0.0f);
+	waypoint = path.begin();
+	nextWaypoint = false;
+}
+
 void Navigation::move(const glm::vec2& _destination)
 {
 	std::list<glm::vec2> newPath = map->findPath(position, _destination);
@@ -23,16 +33,6 @@ void Navigation::stop()
 void Navigation::setMap(const std::shared_ptr<Map>& _map)
 {
 	map = _map;
-}
-
-void Navigation::onStart()
-{
-	speed = 5.0f;
-	position.x = getEntity()->transform.position.x;
-	position.y = getEntity()->transform.position.z;
-	step = glm::vec2(0.0f, 0.0f);
-	waypoint = path.begin();
-	nextWaypoint = false;
 }
 
 void Navigation::onUpdate()

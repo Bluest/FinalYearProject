@@ -12,6 +12,8 @@ class Component
 	friend class Entity;
 
 protected:
+	virtual void onInit() {}
+
 	std::shared_ptr<Entity> getEntity();
 	std::shared_ptr<Core> getCore();
 

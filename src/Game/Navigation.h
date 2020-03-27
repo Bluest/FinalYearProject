@@ -6,13 +6,14 @@ class Map;
 class Navigation : public Component
 {
 public:
+	void onInit();
+
 	void move(const glm::vec2& _destination);
 	void stop();
 
 	void setMap(const std::shared_ptr<Map>& _map);
 
 private:
-	void onStart();
 	void onUpdate();
 
 	void moveToWaypoint();

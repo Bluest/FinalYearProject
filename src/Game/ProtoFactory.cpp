@@ -15,10 +15,8 @@ void ProtoFactory::createUnit()
 	case 3: spawnPos = glm::vec2(3.0f, 18.0f); break;
 	}
 
-	std::shared_ptr<Entity> unit = gameManager.lock()->createUnit();
+	std::shared_ptr<Entity> unit = gameManager.lock()->createUnit(spawnPos);
 
-	unit->transform.position.x = spawnPos.x;
-	unit->transform.position.z = spawnPos.y;
 	unit->transform.scale *= 0.8f;
 }
 

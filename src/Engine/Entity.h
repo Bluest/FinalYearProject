@@ -26,6 +26,7 @@ public:
 	{
 		std::shared_ptr<T> component = std::make_shared<T>();
 		component->entity = self;
+		component->onInit();
 		components.push_back(component);
 
 		return component;
