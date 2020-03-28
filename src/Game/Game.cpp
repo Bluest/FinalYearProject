@@ -54,6 +54,7 @@ void Game::start()
 	std::shared_ptr<Entity> building = core->addEntity();
 	building->transform.position = glm::vec3(1.5f, 0.0f, 17.5f);
 	building->transform.scale *= 2.0f;
+	building->addTag("Building");
 	gameManager->addEntity(building);
 
 	std::shared_ptr<ProtoFactory> protofactory =
@@ -61,7 +62,6 @@ void Game::start()
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
 	protofactory->setGameManager(gameManager);
-	buildingSelectable->addTag(Selectable::Tag::BUILDING);
 	std::shared_ptr<Commandable> buildingCommandable =
 		building->addComponent<Commandable>();
 	buildingCommandable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);

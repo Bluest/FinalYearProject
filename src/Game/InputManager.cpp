@@ -103,11 +103,11 @@ void InputManager::onUpdate()
 			for (auto it = selection.begin(); it != selection.end(); ++it)
 			{
 				// If this is a unit, move
-				if ((*it)->getComponent<Selectable>()->hasTag(Selectable::Tag::UNIT))
+				if ((*it)->hasTag("Unit"))
 				{
 					rightClickCommands[0]->action(*it, worldPosition);
 				}
-				else if ((*it)->getComponent<Selectable>()->hasTag(Selectable::Tag::BUILDING))
+				else if ((*it)->hasTag("Building"))
 				{
 					// Set rally point
 					printf("Buildings can't move\n");

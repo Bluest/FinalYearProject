@@ -21,10 +21,10 @@ std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
 	std::shared_ptr<Entity> unit = getCore()->addEntity();
 	unit->transform.position.x = _position.x;
 	unit->transform.position.z = _position.y;
+	unit->addTag("Unit");
 
 	std::shared_ptr<Selectable> selectable =
 		unit->addComponent<Selectable>();
-	selectable->addTag(Selectable::Tag::UNIT);
 
 	std::shared_ptr<Commandable> commandable =
 		unit->addComponent<Commandable>();

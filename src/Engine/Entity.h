@@ -1,5 +1,6 @@
 #include <list>
 #include <memory>
+#include <string>
 
 #include "glm/vec3.hpp"
 
@@ -49,6 +50,9 @@ public:
 		return nullptr;
 	}
 
+	void addTag(const std::string& _tag);
+	bool hasTag(const std::string& _tag);
+
 	std::shared_ptr<Core> getCore();
 
 private:
@@ -59,4 +63,5 @@ private:
 	std::weak_ptr<Entity> self;
 	std::weak_ptr<Core> core;
 	std::list<std::shared_ptr<Component>> components;
+	std::list<std::string> tags;
 };

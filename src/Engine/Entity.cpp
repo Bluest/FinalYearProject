@@ -1,6 +1,24 @@
 #include "Component.h"
 #include "Entity.h"
 
+void Entity::addTag(const std::string& _tag)
+{
+	tags.push_back(_tag);
+}
+
+bool Entity::hasTag(const std::string& _tag)
+{
+	for (auto it = tags.begin(); it != tags.end(); ++it)
+	{
+		if (*it == _tag)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Entity::start()
 {
 	for (auto it = components.begin(); it != components.end(); ++it)

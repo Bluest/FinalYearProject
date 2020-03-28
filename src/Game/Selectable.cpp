@@ -1,29 +1,6 @@
 #include "Constants.h"
 #include "Selectable.h"
 
-std::shared_ptr<Entity> Selectable::pubEntity()
-{
-	return getEntity();
-}
-
-void Selectable::addTag(const Tag& _tag)
-{
-	tags.push_back(_tag);
-}
-
-bool Selectable::hasTag(const Tag& _tag)
-{
-	for (auto it = tags.begin(); it != tags.end(); ++it)
-	{
-		if (*it == _tag)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 bool Selectable::isClicked(const SDL_Point& _clickPosition)
 {
 	// Translate Entity's position from world space to screen space
