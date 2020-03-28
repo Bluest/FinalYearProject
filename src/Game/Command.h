@@ -18,9 +18,9 @@ public:
 		AIMED
 	};
 
-	virtual void action(const std::shared_ptr<Selectable>& _actor) {}
-	virtual void action(const std::shared_ptr<Selectable>& _actor, const std::shared_ptr<Selectable>& _target) {}
-	virtual void action(const std::shared_ptr<Selectable>& _actor, const glm::vec2& _position) {}
+	virtual void action(const std::shared_ptr<Entity>& _actor) {}
+	virtual void action(const std::shared_ptr<Entity>& _actor, const std::shared_ptr<Entity>& _target) {}
+	virtual void action(const std::shared_ptr<Entity>& _actor, const glm::vec2& _position) {}
 
 protected:
 	std::string name;

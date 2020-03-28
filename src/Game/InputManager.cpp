@@ -1,4 +1,5 @@
 #include "Command.h"
+#include "Commandable.h"
 #include "GameManager.h"
 #include "InputManager.h"
 #include "Selectable.h"
@@ -57,7 +58,7 @@ void InputManager::onUpdate()
 							{
 								for (auto it = selection.begin(); it != selection.end(); ++it)
 								{
-									if ((*it)->hasCommand(commands[y][x]))
+									if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
 									{
 										commands[y][x]->action(*it);
 									}
@@ -72,15 +73,15 @@ void InputManager::onUpdate()
 				// What did I click?
 
 				// Single click, single unit
-				std::list<std::shared_ptr<Selectable>> selectables = gameManager->getSelectables();
-				for (auto it = selectables.begin(); it != selectables.end(); ++it)
+				std::list<std::shared_ptr<Entity>> gameEntities = gameManager->getEntities();
+				for (auto it = gameEntities.begin(); it != gameEntities.end(); ++it)
 				{
 					// If an object is clicked, select it
-					if ((*it)->isClicked(input->mousePosition()))
+					if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
 					{
 						selection.clear();
 						selection.push_back(*it);
-						commands = (*it)->getCommands();
+						commands = (*it)->getComponent<Commandable>()->getCommands();
 						break;
 					}
 				}
@@ -102,11 +103,11 @@ void InputManager::onUpdate()
 			for (auto it = selection.begin(); it != selection.end(); ++it)
 			{
 				// If this is a unit, move
-				if ((*it)->hasTag(Selectable::Tag::UNIT))
+				if ((*it)->getComponent<Selectable>()->hasTag(Selectable::Tag::UNIT))
 				{
 					rightClickCommands[0]->action(*it, worldPosition);
 				}
-				else if ((*it)->hasTag(Selectable::Tag::BUILDING))
+				else if ((*it)->getComponent<Selectable>()->hasTag(Selectable::Tag::BUILDING))
 				{
 					// Set rally point
 					printf("Buildings can't move\n");

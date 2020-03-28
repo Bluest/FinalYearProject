@@ -1,6 +1,7 @@
 #include "glm/vec2.hpp"
 
 #include "CircleRenderer.h"
+#include "Commandable.h"
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
 #include "CommandMove.h"
@@ -53,15 +54,17 @@ void Game::start()
 	std::shared_ptr<Entity> building = core->addEntity();
 	building->transform.position = glm::vec3(1.5f, 0.0f, 17.5f);
 	building->transform.scale *= 2.0f;
+	gameManager->addEntity(building);
 
 	std::shared_ptr<ProtoFactory> protofactory =
 		building->addComponent<ProtoFactory>();
 	std::shared_ptr<Selectable> buildingSelectable =
 		building->addComponent<Selectable>();
-	gameManager->addSelectable(buildingSelectable);
 	protofactory->setGameManager(gameManager);
 	buildingSelectable->addTag(Selectable::Tag::BUILDING);
-	buildingSelectable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
+	std::shared_ptr<Commandable> buildingCommandable =
+		building->addComponent<Commandable>();
+	buildingCommandable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
 
 	// Units
 	std::shared_ptr<Entity> unit = gameManager->createUnit(glm::vec2(0.0f, 19.0f));

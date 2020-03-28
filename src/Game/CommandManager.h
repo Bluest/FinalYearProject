@@ -5,12 +5,11 @@
 #include "Constants.h"
 
 class Command;
-class Selectable;
 
 class CommandManager : public Component
 {
 public:
-	void setSelection(const std::shared_ptr<std::list<std::shared_ptr<Selectable>>>& _selection);
+	void setSelection(const std::shared_ptr<std::list<std::shared_ptr<Entity>>>& _selection);
 	void setCommands(const std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows>& _commands);
 
 private:
@@ -22,7 +21,7 @@ private:
 	std::shared_ptr<Input> input;
 
 	// Pointer to SelectionManager::selection
-	std::shared_ptr<std::list<std::shared_ptr<Selectable>>> selection;
+	std::shared_ptr<std::list<std::shared_ptr<Entity>>> selection;
 
 	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> commands;
 	SDL_Rect panelPosition;

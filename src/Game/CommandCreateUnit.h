@@ -3,5 +3,5 @@
 class CommandCreateUnit : public Command
 {
 public:
-	void action(const std::shared_ptr<Selectable>& _actor);
+	void action(const std::shared_ptr<Entity>& _actor);
 };

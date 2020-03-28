@@ -1,3 +1,4 @@
+#include "Commandable.h"
 #include "CommandManager.h"
 #include "GameManager.h"
 #include "Selectable.h"
@@ -17,7 +18,7 @@ void SelectionManager::onStart()
 {
 	input = getCore()->getInput();
 
-	selection = std::make_shared<std::list<std::shared_ptr<Selectable>>>();
+	selection = std::make_shared<std::list<std::shared_ptr<Entity>>>();
 	commandManager->setSelection(selection);
 }
 
@@ -28,15 +29,15 @@ void SelectionManager::onUpdate()
 		// What did I click?
 
 		// Single click, single unit
-		std::list<std::shared_ptr<Selectable>> selectables = gameManager->getSelectables();
-		for (auto it = selectables.begin(); it != selectables.end(); ++it)
+		std::list<std::shared_ptr<Entity>> gameEntities = gameManager->getEntities();
+		for (auto it = gameEntities.begin(); it != gameEntities.end(); ++it)
 		{
 			// If an object is clicked, select it
-			if ((*it)->isClicked(input->mousePosition()))
+			if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
 			{
 				selection->clear();
 				selection->push_back(*it);
-				commandManager->setCommands((*it)->getCommands());
+				commandManager->setCommands((*it)->getComponent<Commandable>()->getCommands());
 				break;
 			}
 		}

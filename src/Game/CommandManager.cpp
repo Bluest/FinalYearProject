@@ -1,8 +1,8 @@
+#include "Commandable.h"
 #include "CommandCreateUnit.h"
 #include "CommandManager.h"
-#include "Selectable.h"
 
-void CommandManager::setSelection(const std::shared_ptr<std::list<std::shared_ptr<Selectable>>>& _selection)
+void CommandManager::setSelection(const std::shared_ptr<std::list<std::shared_ptr<Entity>>>& _selection)
 {
 	selection = _selection;
 }
@@ -48,7 +48,7 @@ void CommandManager::onUpdate()
 						{
 							for (auto it = selection->begin(); it != selection->end(); ++it)
 							{
-								if ((*it)->hasCommand(commands[y][x]))
+								if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
 								{
 									commands[y][x]->action(*it);
 								}

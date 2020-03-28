@@ -18,5 +18,5 @@ private:
 	std::shared_ptr<GameManager> gameManager;
 	std::shared_ptr<Input> input;
 
-	std::shared_ptr<std::list<std::shared_ptr<Selectable>>> selection;
+	std::shared_ptr<std::list<std::shared_ptr<Entity>>> selection;
 };

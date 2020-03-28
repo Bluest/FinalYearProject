@@ -1,4 +1,5 @@
 #include "CircleRenderer.h"
+#include "Commandable.h"
 #include "CommandStop.h"
 #include "GameManager.h"
 #include "Map.h"
@@ -10,9 +11,9 @@ void GameManager::onInit()
 	map = getEntity()->getComponent<Map>();
 }
 
-void GameManager::addSelectable(const std::shared_ptr<Selectable>& _selectable)
+void GameManager::addEntity(const std::shared_ptr<Entity>& _entity)
 {
-	selectables.push_back(_selectable);
+	entities.push_back(_entity);
 }
 
 std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
@@ -23,9 +24,11 @@ std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
 
 	std::shared_ptr<Selectable> selectable =
 		unit->addComponent<Selectable>();
-	selectables.push_back(selectable);
 	selectable->addTag(Selectable::Tag::UNIT);
-	selectable->addCommand(std::make_shared<CommandStop>(), 0, 1);
+
+	std::shared_ptr<Commandable> commandable =
+		unit->addComponent<Commandable>();
+	commandable->addCommand(std::make_shared<CommandStop>(), 0, 1);
 
 	std::shared_ptr<Navigation> navigation =
 		unit->addComponent<Navigation>();
@@ -34,10 +37,12 @@ std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
 	std::shared_ptr<CircleRenderer> circleRenderer =
 		unit->addComponent<CircleRenderer>();
 
+	entities.push_back(unit);
+
 	return unit;
 }
 
-std::list<std::shared_ptr<Selectable>> GameManager::getSelectables()
+std::list<std::shared_ptr<Entity>> GameManager::getEntities()
 {
-	return selectables;
+	return entities;
 }

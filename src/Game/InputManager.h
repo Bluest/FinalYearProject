@@ -7,7 +7,6 @@
 
 class Command;
 class GameManager;
-class Selectable;
 
 class InputManager : public Component
 {
@@ -31,7 +30,7 @@ private:
 	std::shared_ptr<Input> input;
 
 	State state;
-	std::list<std::shared_ptr<Selectable>> selection;
+	std::list<std::shared_ptr<Entity>> selection;
 	std::array<std::array<std::shared_ptr<Command>, commandSlotColumns>, commandSlotRows> commands;
 	std::vector<std::shared_ptr<Command>> rightClickCommands;
 
