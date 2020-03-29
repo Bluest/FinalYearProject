@@ -73,17 +73,12 @@ void InputManager::onUpdate()
 				// What did I click?
 
 				// Single click, single unit
-				std::list<std::shared_ptr<Entity>> gameEntities = gameManager->getEntities();
-				for (auto it = gameEntities.begin(); it != gameEntities.end(); ++it)
+				std::shared_ptr<Entity> selected = gameManager->getEntityAt(input->mousePosition());
+				if (selected)
 				{
-					// If an object is clicked, select it
-					if ((*it)->getComponent<Selectable>()->isClicked(input->mousePosition()))
-					{
-						selection.clear();
-						selection.push_back(*it);
-						commands = (*it)->getComponent<Commandable>()->getCommands();
-						break;
-					}
+					selection.clear();
+					selection.push_back(selected);
+					commands = selected->getComponent<Commandable>()->getCommands();
 				}
 			}
 		}

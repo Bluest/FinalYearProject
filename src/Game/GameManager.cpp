@@ -42,6 +42,19 @@ std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
 	return unit;
 }
 
+std::shared_ptr<Entity> GameManager::getEntityAt(const SDL_Point& _position)
+{
+	for (auto it = entities.begin(); it != entities.end(); ++it)
+	{
+		if ((*it)->getComponent<Selectable>()->isClicked(_position))
+		{
+			return *it;
+		}
+	}
+
+	return nullptr;
+}
+
 std::list<std::shared_ptr<Entity>> GameManager::getEntities()
 {
 	return entities;
