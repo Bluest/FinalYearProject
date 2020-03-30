@@ -29,19 +29,10 @@ std::shared_ptr<Entity> Core::addEntity()
 	std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 	entity->self = entity;
 	entity->core = self;
+	entity->destroyed = false;
 	entities.push_back(entity);
 
 	return entity;
-}
-
-float Core::getDeltaTime()
-{
-	return time->getDelta();
-}
-
-std::shared_ptr<Input> Core::getInput()
-{
-	return input;
 }
 
 void Core::run()
@@ -55,14 +46,37 @@ void Core::run()
 
 	while (input->processInput())
 	{
-		for (auto it = entities.begin(); it != entities.end(); ++it)
-		{
-			(*it)->update();
-		}
-
+		update();
 		draw();
-
 		time->tick();
+	}
+}
+
+float Core::getDeltaTime()
+{
+	return time->getDelta();
+}
+
+std::shared_ptr<Input> Core::getInput()
+{
+	return input;
+}
+
+void Core::update()
+{
+	std::list<std::shared_ptr<Entity>>::iterator it = entities.begin();
+	while (it != entities.end())
+	{
+		(*it)->update();
+
+		if ((*it)->destroyed)
+		{
+			it = entities.erase(it);
+		}
+		else
+		{
+			++it;
+		}
 	}
 }
 

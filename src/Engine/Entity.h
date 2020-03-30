@@ -20,7 +20,7 @@ class Entity
 	friend class Core;
 
 public:
-	Transform transform;
+	~Entity();
 
 	template <typename T>
 	std::shared_ptr<T> addComponent()
@@ -53,7 +53,11 @@ public:
 	void addTag(const std::string& _tag);
 	bool hasTag(const std::string& _tag);
 
+	void destroy();
+
 	std::shared_ptr<Core> getCore();
+
+	Transform transform;
 
 private:
 	void start();
@@ -64,4 +68,5 @@ private:
 	std::weak_ptr<Core> core;
 	std::list<std::shared_ptr<Component>> components;
 	std::list<std::string> tags;
+	bool destroyed;
 };

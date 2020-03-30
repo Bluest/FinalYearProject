@@ -11,6 +11,7 @@ public:
 	void addEntity(const std::shared_ptr<Entity>& _entity);
 	std::shared_ptr<Entity> createUnit(const glm::vec2& _position);
 	std::shared_ptr<Entity> getEntityAt(const SDL_Point& _position);
+	void destroyEntity(const std::shared_ptr<Entity>& _entity);
 
 	std::list<std::shared_ptr<Entity>> getEntities();
 

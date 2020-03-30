@@ -1,6 +1,15 @@
 #include "Component.h"
 #include "Entity.h"
 
+Entity::~Entity()
+{
+	std::list<std::shared_ptr<Component>>::iterator it = components.begin();
+	while (it != components.end())
+	{
+		it = components.erase(it);
+	}
+}
+
 void Entity::addTag(const std::string& _tag)
 {
 	tags.push_back(_tag);
@@ -17,6 +26,16 @@ bool Entity::hasTag(const std::string& _tag)
 	}
 
 	return false;
+}
+
+void Entity::destroy()
+{
+	destroyed = true;
+}
+
+std::shared_ptr<Core> Entity::getCore()
+{
+	return core.lock();
 }
 
 void Entity::start()
@@ -41,9 +60,4 @@ void Entity::draw(SDL_Renderer* _renderer)
 	{
 		(*it)->onDraw(_renderer);
 	}
-}
-
-std::shared_ptr<Core> Entity::getCore()
-{
-	return core.lock();
 }

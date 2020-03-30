@@ -55,6 +55,12 @@ std::shared_ptr<Entity> GameManager::getEntityAt(const SDL_Point& _position)
 	return nullptr;
 }
 
+void GameManager::destroyEntity(const std::shared_ptr<Entity>& _entity)
+{
+	entities.remove(_entity);
+	_entity->destroy();
+}
+
 std::list<std::shared_ptr<Entity>> GameManager::getEntities()
 {
 	return entities;

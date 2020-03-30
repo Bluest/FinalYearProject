@@ -20,6 +20,7 @@ public:
 	std::shared_ptr<Input> getInput();
 
 private:
+	void update();
 	void draw();
 
 	SDL_Window* window;

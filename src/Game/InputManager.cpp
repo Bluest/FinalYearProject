@@ -90,22 +90,34 @@ void InputManager::onUpdate()
 			// What did I click?
 			// What do I have selected?
 
-			// if mousePosition isn't over an enemy unit (so it's not an attack command)
-			glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
-			// "move here" animation on ground
-
-			// Attempt to move selected units to the position clicked
-			for (auto it = selection.begin(); it != selection.end(); ++it)
+			std::shared_ptr<Entity> target = gameManager->getEntityAt(input->mousePosition());
+			if (target)
 			{
-				// If this is a unit, move
-				if ((*it)->hasTag("Unit"))
+				if (target->hasTag("Unit"/*"Enemy"*/))
 				{
-					rightClickCommands[0]->action(*it, worldPosition);
+					selection.remove(target);
+					gameManager->destroyEntity(target);
 				}
-				else if ((*it)->hasTag("Building"))
+			}
+			else
+			{
+				// if mousePosition isn't over an enemy unit (so it's not an attack command)
+				glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
+				// "move here" animation on ground
+
+				// Attempt to move selected units to the position clicked
+				for (auto it = selection.begin(); it != selection.end(); ++it)
 				{
-					// Set rally point
-					printf("Buildings can't move\n");
+					// If this is a unit, move
+					if ((*it)->hasTag("Unit"))
+					{
+						rightClickCommands[0]->action(*it, worldPosition);
+					}
+					else if ((*it)->hasTag("Building"))
+					{
+						// Set rally point
+						printf("Buildings can't move\n");
+					}
 				}
 			}
 		}
