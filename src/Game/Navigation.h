@@ -11,7 +11,7 @@ public:
 	void move(const glm::vec2& _destination);
 	void stop();
 
-	void setMap(const std::shared_ptr<Map>& _map);
+	void setMap(const std::weak_ptr<Map>& _map);
 
 private:
 	void onUpdate();
@@ -19,7 +19,7 @@ private:
 	void moveToWaypoint();
 	void updateEntityPosition();
 
-	std::shared_ptr<Map> map;
+	std::weak_ptr<Map> map;
 
 	float speed;
 	glm::vec2 position;

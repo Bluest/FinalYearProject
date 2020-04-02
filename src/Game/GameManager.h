@@ -16,7 +16,7 @@ public:
 	std::list<std::shared_ptr<Entity>> getEntities();
 
 private:
-	std::shared_ptr<Map> map;
+	std::weak_ptr<Map> map;
 
 	// Should this be a pointer to a list instead? Faster copying?
 	std::list<std::shared_ptr<Entity>> entities;

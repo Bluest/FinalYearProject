@@ -13,7 +13,7 @@ void Navigation::onInit()
 
 void Navigation::move(const glm::vec2& _destination)
 {
-	std::list<glm::vec2> newPath = map->findPath(position, _destination);
+	std::list<glm::vec2> newPath = map.lock()->findPath(position, _destination);
 
 	if (!newPath.empty())
 	{
@@ -30,7 +30,7 @@ void Navigation::stop()
 	waypoint = path.begin();
 }
 
-void Navigation::setMap(const std::shared_ptr<Map>& _map)
+void Navigation::setMap(const std::weak_ptr<Map>& _map)
 {
 	map = _map;
 }
