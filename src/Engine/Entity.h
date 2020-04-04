@@ -20,8 +20,6 @@ class Entity
 	friend class Core;
 
 public:
-	~Entity();
-
 	template <typename T>
 	std::shared_ptr<T> addComponent()
 	{

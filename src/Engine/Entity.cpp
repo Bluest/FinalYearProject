@@ -1,15 +1,6 @@
 #include "Component.h"
 #include "Entity.h"
 
-Entity::~Entity()
-{
-	std::list<std::shared_ptr<Component>>::iterator it = components.begin();
-	while (it != components.end())
-	{
-		it = components.erase(it);
-	}
-}
-
 void Entity::addTag(const std::string& _tag)
 {
 	tags.push_back(_tag);
