@@ -40,6 +40,8 @@ add_executable(Game
 	src/Game/CommandMove.h
 	src/Game/CommandStop.cpp
 	src/Game/CommandStop.h
+	src/Game/CommandUnitRightClick.cpp
+	src/Game/CommandUnitRightClick.h
 	src/Game/Constants.h
 	src/Game/InputManager.cpp
 	src/Game/InputManager.h
@@ -54,6 +56,8 @@ add_executable(Game
 	src/Game/Navigation.h
 	src/Game/Node.cpp
 	src/Game/Node.h
+	src/Game/Projectile.cpp
+	src/Game/Projectile.h
 	src/Game/ProtoFactory.cpp
 	src/Game/ProtoFactory.h
 	src/Game/Selectable.cpp

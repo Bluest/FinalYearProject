@@ -21,6 +21,16 @@ bool Commandable::hasCommand(const std::shared_ptr<Command>& _command)
 	return false;
 }
 
+void Commandable::setRightClickCommand(const std::shared_ptr<Command>& _command)
+{
+	rightClickCommand = _command;
+}
+
+std::shared_ptr<Command> Commandable::getRightClickCommand()
+{
+	return rightClickCommand;
+}
+
 std::array<std::array<std::shared_ptr<Command>, 3>, 2> Commandable::getCommands()
 {
 	return commands;

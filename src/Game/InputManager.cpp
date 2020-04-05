@@ -91,6 +91,12 @@ void InputManager::onUpdate()
 			// What do I have selected?
 
 			std::shared_ptr<Entity> target = gameManager->getEntityAt(input->mousePosition());
+
+			for (auto it = selection.begin(); it != selection.end(); ++it)
+			{
+				(*it)->getComponent<Commandable>()->getRightClickCommand()->action(*it, target);
+			}
+
 			if (target)
 			{
 				if (target->hasTag("Unit"/*"Enemy"*/))

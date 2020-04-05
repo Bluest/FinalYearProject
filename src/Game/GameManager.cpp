@@ -1,6 +1,7 @@
 #include "CircleRenderer.h"
 #include "Commandable.h"
 #include "CommandStop.h"
+#include "CommandUnitRightClick.h"
 #include "GameManager.h"
 #include "Map.h"
 #include "Navigation.h"
@@ -29,6 +30,7 @@ std::shared_ptr<Entity> GameManager::createUnit(const glm::vec2& _position)
 	std::shared_ptr<Commandable> commandable =
 		unit->addComponent<Commandable>();
 	commandable->addCommand(std::make_shared<CommandStop>(), 0, 1);
+	commandable->setRightClickCommand(std::make_shared<CommandUnitRightClick>());
 
 	std::shared_ptr<Navigation> navigation =
 		unit->addComponent<Navigation>();
