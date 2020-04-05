@@ -4,11 +4,6 @@
 #include "InputManager.h"
 #include "Selectable.h"
 
-void InputManager::addRightClickCommand(const std::shared_ptr<Command>& _command)
-{
-	rightClickCommands.push_back(_command);
-}
-
 void InputManager::setGameManager(const std::shared_ptr<GameManager>& _gameManager)
 {
 	gameManager = _gameManager;
@@ -58,9 +53,16 @@ void InputManager::onUpdate()
 							{
 								for (auto it = selection.begin(); it != selection.end(); ++it)
 								{
-									if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
+									if (commands[y][x]->getType() == Command::Type::INSTANT)
 									{
-										commands[y][x]->action(*it);
+										if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
+										{
+											commands[y][x]->action(*it, glm::vec2(), nullptr);
+										}
+									}
+									else
+									{
+										// Change state
 									}
 								}
 							}
@@ -87,44 +89,12 @@ void InputManager::onUpdate()
 		{
 			// CommandManager::rightClick()
 
-			// What did I click?
-			// What do I have selected?
-
+			glm::vec2 position = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
 			std::shared_ptr<Entity> target = gameManager->getEntityAt(input->mousePosition());
 
 			for (auto it = selection.begin(); it != selection.end(); ++it)
 			{
-				(*it)->getComponent<Commandable>()->getRightClickCommand()->action(*it, target);
-			}
-
-			if (target)
-			{
-				if (target->hasTag("Unit"/*"Enemy"*/))
-				{
-					selection.remove(target);
-					gameManager->destroyEntity(target);
-				}
-			}
-			else
-			{
-				// if mousePosition isn't over an enemy unit (so it's not an attack command)
-				glm::vec2 worldPosition = (glm::vec2(input->mousePosition().x, input->mousePosition().y) - nodeSize / 2) / nodeSize;
-				// "move here" animation on ground
-
-				// Attempt to move selected units to the position clicked
-				for (auto it = selection.begin(); it != selection.end(); ++it)
-				{
-					// If this is a unit, move
-					if ((*it)->hasTag("Unit"))
-					{
-						rightClickCommands[0]->action(*it, worldPosition);
-					}
-					else if ((*it)->hasTag("Building"))
-					{
-						// Set rally point
-						printf("Buildings can't move\n");
-					}
-				}
+				(*it)->getComponent<Commandable>()->getRightClickCommand()->action(*it, position, target);
 			}
 		}
 

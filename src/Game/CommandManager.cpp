@@ -48,10 +48,10 @@ void CommandManager::onUpdate()
 						{
 							for (auto it = selection->begin(); it != selection->end(); ++it)
 							{
-								if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
-								{
-									commands[y][x]->action(*it);
-								}
+								//if ((*it)->getComponent<Commandable>()->hasCommand(commands[y][x]))
+								//{
+								//	commands[y][x]->action(*it);
+								//}
 							}
 						}
 					}

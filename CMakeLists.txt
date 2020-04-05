@@ -29,6 +29,7 @@ target_link_libraries(Engine SDL2 SDL2main)
 add_executable(Game
 	src/Game/CircleRenderer.cpp
 	src/Game/CircleRenderer.h
+	src/Game/Command.cpp
 	src/Game/Command.h
 	src/Game/Commandable.cpp
 	src/Game/Commandable.h

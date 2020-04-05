@@ -38,11 +38,6 @@ void Game::start()
 		std::shared_ptr<InputManager> inputManager =
 			player->addComponent<InputManager>();
 
-		// rightClickCommand[0]: Move
-		inputManager->addRightClickCommand(std::make_shared<CommandMove>());
-		// rightClickCommand[1]: Attack
-		// rightClickCommand[2]: Rally
-
 		// Game board
 		std::shared_ptr<Entity> gameBoard = core->addEntity();
 		std::shared_ptr<Map> map =
@@ -66,6 +61,7 @@ void Game::start()
 		std::shared_ptr<Commandable> buildingCommandable =
 			building->addComponent<Commandable>();
 		buildingCommandable->addCommand(std::make_shared<CommandCreateUnit>(), 0, 0);
+		buildingCommandable->setRightClickCommand(std::make_shared<CommandCreateUnit>()); // Set rally point
 
 		// Units
 		std::shared_ptr<Entity> unit = gameManager->createUnit(glm::vec2(0.0f, 19.0f));

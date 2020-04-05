@@ -18,9 +18,9 @@ public:
 		AIMED
 	};
 
-	virtual void action(const std::shared_ptr<Entity>& _actor) {}
-	virtual void action(const std::shared_ptr<Entity>& _actor, const std::shared_ptr<Entity>& _target) {}
-	virtual void action(const std::shared_ptr<Entity>& _actor, const glm::vec2& _position) {}
+	virtual void action(const std::shared_ptr<Entity>& _actor, const glm::vec2& _position, const std::shared_ptr<Entity>& _target);
+
+	Type getType();
 
 protected:
 	std::string name;
